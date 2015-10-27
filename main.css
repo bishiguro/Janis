@@ -1,4 +1,5 @@
-.nav a {
+/*NAVIGATION*/
+.navigation a {
   color: #5a5a5a;
   font-size: 11px;
   font-weight: bold;
@@ -6,12 +7,13 @@
   text-transform: uppercase;
 }
 
-.nav li {
+.navigation li {
   display: inline;
 }
 
+/*JUMBOTRON*/
 .jumbotron {
-  background-image:url('http://goo.gl/04j7Nn');
+  background-image:url('artsy_hot_glue.jpg');
   height: 500px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -22,8 +24,8 @@
   top:100px;
 }
 
-.jumbotron h1 {
-  color: #fff;
+.jumbotron h1 a {
+  color: #FFF;
   font-size: 48px;  
   font-family: 'Shift', sans-serif;
   font-weight: bold;
@@ -31,9 +33,27 @@
 
 .jumbotron p {
   font-size: 20px;
+  color: #FFF;
+}
+
+/*MINI TITLE*/
+.mini-title {
+  background-color: #7A7A99;
+}
+
+.mini-title h1 a{
+  color:#FFF;
+  font-size: 48px;
+  font-family: 'Shift', sans-serif;
+  font-weight: bold;
+}
+
+.mini-title p {
+  font-size: 20px;
   color: #fff;
 }
 
+/*LEARN MORE*/
 .learn-more {
   background-color: #f7f7f7;
 }
@@ -48,17 +68,19 @@
   color: #00b0ff;
 }
 
-.neighborhood-guides{
-    background-color:#efefef;
-    border-bottom:1px solid #dbdbdb;
+/*MEETING NOTES*/
+.meeting-notes h2{
+  font-size: 20px;
 }
 
-.neighborhood-guides h2{
-    color:#393c3d;
-    font-size:24px;
+.meeting-notes p {
+  font-size: 16px;
 }
 
-.neighborhood-guides p{
-    font-size:15px;
-    margin-bottom:13px;
+.meeting-notes ul{
+  font-size: 16px;
+}
+
+.text h2{
+  font-size: 16px;
 }
