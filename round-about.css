@@ -1,0 +1,38 @@
+/*round-about.css*/
+/*Megan McCauley created version. No pieces of old css left.*/
+
+.row {
+	margin-left: 200px;
+	margin-right: 200px;
+}
+
+h3 {
+	color: #3bb6a1;
+}
+small {
+	font-size: 16px;
+	font-style: italic;
+	color: #9e99bc;
+}
+
+.img-center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+p {
+	text-align: left;
+}
+.img-circle {
+	width: 250px;
+	height: 250px;
+	border-radius: 50%;
+}
+
+.bottom-row {
+	text-align: right;
+}
+
+footer {
+	margin-left: 200px;
+}
