@@ -1,15 +1,27 @@
 <!-- blog.html -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Bootstrap Blog Template">
+    <meta name="author" content="Megan McCauley">
     <title>Twisted Art - Blog</title>
+
+    <!-- Font -->
     <link href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/shift.css" rel="stylesheet">
-    
+
+    <!-- Bootstrap CSS files -->
     <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-theme.min.css">
     <link rel="stylesheet" href="main.css">
 
+    <!-- JQuery and Bootstrap Script files -->
+    <script src="jquery-2.1.4.min.js"></script>
+    <script src="bootstrap.min.js"></script>
   </head>
 
   <body>
@@ -35,11 +47,50 @@
       </div>
     </div> 
 
-    <div class="text">
+    <div id="body" class="container">
+        <article>
+          <h1><b>Latest Posts</b></h1>
+          <hr>
+          <h2>Advancing the Mechanical System</h2>
+          <h3>Charlie Mouton</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+              <!-- <span class="glyphicon glyphicon-time"></span> -->
+              30 October 2015 12:28 PM
+              <hr>
+              <div class="text">
+                <h2>During Sprint 1, we were able to create a mechanical system that would serve as our testing platform for our first few sprints. We quickly cut some plywood on the shopbot CNC router we have access to. Of course, as with any first prototype, we ran into some issues at assembly, specifically if the areas of servo mounting and wire management.</h2>
+
+                <img src="Proto1_Render.JPG" class="img-responsive">
+
+                <h2>I did not account for the mounting tabs on each servo, and the servo mounted in the middle did not fit, and eventually was mounted with its tabs sitting above the other two. Also, once we mounted our two inch wide ribbons, we noticed that due to the servos close proximity to the front plate, the ribbons were not free to rotate 180 degrees without interference. We solved this problem temporarily using delrin spacers.</h2>
+
+                <img src="servos.jpg" class="img-responsive">
+
+                <h2>I put little thought in wire management, causing the wires running from our arduino to the top servos to look unsightly, and leading to several instances of them getting unplugged from our breadboard due to their mounting system. There is also no home for the arduino and breadboard, and they are just resting at the bottom, causing some interference with the servos mounted at the bottom of our system.</h2>
+
+                <img src="arduino.jpg" class="img-responsive">
+
+                <h2>To solve these problems for Proto2, I implemented some holes in our arduino mounting plates for wires to go through. I also left more space on each side of our front plate for the wire to traverse down to the electronics sitting on the base. I also improved the servo mounting plate by rotating the angle that the servo is mounted by ninety degrees, eradicating any interference that might occur between their mounting tabs. This also allowed for us to create better spacing between servo horn and the front plate.</h2>
+
+                <img src="Proto2_Render.JPG" class="img-responsive">
+
+                <h2>Another major change for Proto2 is the addition of two more ribbons. By having potentially 5 ribbons mounted, we can better visualize the patterns that we aim to see in the larger system, even if we won't be able to do that this sprint. By planning ahead in this sense, we ensure that our computing team has a well-suited testing platform for them to continue to work on their interactions with their servos as well as their pattern algorithms.</h2>
+              </div>
+
+        </article>
+        
+<!--         <div class="col-md-4">
+          -- SIDEBAR --
+        </div>
+      </div>
+    </div> -->
+
+<!--     <div class="text">
       <div class="container">
         <h2>//Watch for a blog post by Charlie Mouton by this Friday!</h2>
       </div>
-    </div>
+    </div> -->
     
     <div class = "space">
     </div>
