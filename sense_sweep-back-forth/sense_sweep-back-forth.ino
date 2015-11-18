@@ -2,36 +2,102 @@
 Don't read sensor values until finished with 0-90 sweep.
 Sweep back to zero.*/
 
-#include <Servo.h> 
- 
-Servo myservo;  // create servo object to control a servo 
-int servoPin = 9;         // servo 1
+//---------------------------------------------------------------Libraries and Packages---------------------------------------------------------------
+#include <QueueArray.h>
+#include <Servo.h>
 
-int sensorPin = A0;       // sensor 1
-int sensorValue = 0;      // variable to store the value coming from the sensor
+//---------------------------------------------------------------Initializations---------------------------------------------------------------
+const int NUM_SERVOS = 3;
+const int NUM_SENSORS = 2;
+Servo servos[NUM_SERVOS];  // create servo object to control a servo 
+int servoPins[NUM_SERVOS] = {9, 8, 11};         // servo 1
+int sensorPins[NUM_SENSORS] = {A0, A1};       // sensor 1
+int sensorValues[NUM_SENSORS] = {0};      // variable to store the value coming from the sensor
 
+//create structure for storing sensor events. [pin(where pin is the servo index, not the pin it corresponds to on the arduino), value]
+typedef struct {
+  int pin;
+  int val;
+} sensorEvent;
+
+//create queue for storing and deploying all sensor events
+QueueArray <sensorEvent> queue;
+
+//---------------------------------------------------------------Functions---------------------------------------------------------------
+//Setup
 void setup() 
-{ 
-  myservo.attach(servoPin);  // attaches the servo on pin 9 to the servo object
-  Serial.begin(9600);
-} 
- 
-void loop() 
 {
-  sensorValue = analogRead(sensorPin);
-  Serial.println(sensorValue);
-  
-  if(sensorValue > 100) { // if the sensor detects an object
-    for(int i = 0; i < 90; i+=1) { // turn 90 degrees so that the paddle appears thick
-      myservo.write(i);
-      delay(10);
-    }
-    delay(20);
-    
-    for(int i = 90; i >=0; i-=1) { // turn 90 degrees back so that the paddle appears thin
-      myservo.write(i);
-      delay(10);
-    }
-    delay(20);
+  for (int i = 0; i < NUM_SERVOS; i++) { //loops through all sensors
+      servos[i].attach(servoPins[i]);  // attaches the servo on pin 9 to the servo object  
   }
+  Serial.begin(9600); 
+} 
+
+//Helper Functions
+void move_forward(int servoIndex) {
+  for(int i = 0; i < 90; i+=1) { // turn 90 degrees so that the paddle appears thick
+    servos[servoIndex].write(i);
+    delay(10);
+  }
+  Serial.print("Moved: "); Serial.println(servoIndex);
+  delay(20);
+}
+
+void move_backward(int servoIndex) {
+  for(int i = 90; i >=0; i-=1) { // turn 90 degrees back so that the paddle appears thin
+    servos[servoIndex].write(i);
+    delay(10);
+  }
+  delay(20); 
+}
+
+//bool if_sees_object() {
+// returns if the sensor sees an object. Not implemented yet, but we want to eventually have this filter out some noise. Right now it's pretty noisy because it 'sees' an object even if only one sensor value is above 100.
+//}
+
+void check_sensors() {
+  //loop through all sensors
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    //check sensor value
+    sensorValues[i] = analogRead(sensorPins[i]);
+    Serial.println(sensorValues[i]);
+
+    //if sensor sees something, create event and add to queue
+    if (sensorValues[i] >= 100) {
+      //create event to hold sensor pin and val (type is SensorEvent struct)
+      sensorEvent event;
+      event.pin = i;
+      Serial.print("pin: "); Serial.println(event.pin);
+      event.val = sensorValues[i];
+
+      //enqueue
+      queue.enqueue(event);
+    }
+  }
+}
+
+void update_servos() {
+//if queue has an event, pop the first object, and move the servos that correspond to the sensor
+  if (!queue.isEmpty()) {
+    sensorEvent event = queue.dequeue(); //pops last element
+    
+    int servoNums[] = {2*event.pin, (2*event.pin)+1}; //converts sensor to corresponding servos
+    Serial.print("ServoNums: "); Serial.print(servoNums[0]); Serial.print(", "); Serial.println(servoNums[1]);
+
+    //moves servos
+    for (int i = 0; i < sizeof(servoNums); i++) {
+      if (servoNums[i] < NUM_SERVOS) {
+        move_forward(servoNums[i]);
+        move_backward(servoNums[i]);
+      }
+    }
+  }
+}
+
+void loop() 
+//main loop
+{
+  check_sensors();
+  delay(1);
+  update_servos();
 }
