@@ -1,4 +1,4 @@
-/*sense_and_move_v2
+/*sense_sweep-90
 Don't read sensor values until finished with 0-90 sweep.
 Sweep back to zero.*/
 
