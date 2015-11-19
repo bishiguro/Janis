@@ -51,12 +51,65 @@
         <article>
           <h1><b>Latest Posts</b></h1>
           <hr>
+          <h2>Goodbye Sprint 2, Hello Sprint 3!</h2>
+          <h3>Meg McCauley</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+              13 November 2015 3:03 PM
+            <hr>
+            <div class = "text">
+              <h2>We just finished the first week of Sprint 3. This is a very exciting time for our team where there are lots of things for us to do. We had our first real sprint review to end Sprint 2 last Friday. Seeing the progress of other teams and receiving feedback from our professors and our peers left us with a lot to think about as we started Sprint 3.</h2>
+
+              <h2>The first thing we did during Sprint 3 was sit down as a full team and talk in detail about the direction that we want our project to head in. The first major change that we made involved switching our main display from a ribbon that twists to a paddle that rotates. This choice was made for a variety of reasons, but primarily to reduce the number of servos that we would have to power and to simplify the computing system.</h2>
+
+              <h2>After making our plans to look forward, we spent some time look back and reflecting on Sprint 2 by doing a sprint retrospective. During a retrospective, each team member individually writes down pluses and deltas from the sprint on sticky notes. Pluses are positive things that we want to continue doing; deltas are things that could use improvement next sprint. After we have all written our thoughts down, we take turns putting our sticky notes on the wall and giving a short explanation for each plus and delta. As more team members add their sticky notes to the wall, we try to group them by similar idea or theme.</h2>
+
+              <img src="retro.jpg" class="img-responsive">
+
+              <h2>At the end of this process, we look over the wall as a whole and chose a kaizen, or focus, for the upcoming sprint. This sprint, we are going to be focusing on communicating problems. This means that whenever one subteam runs into a problem, they will make sure to inform the full team so that we can all brainstorm solutions together. This kaizen also includes communicating with our professors and peers to get a different perspective and possible outside suggestions to resolve our problem.</h2>
+
+              <h2>After talking about our pluses and deltas, we made a list of goals that we as a team wanted to accomplish this sprint:</h2>
+
+              <ul>
+                <li>Sensor integration</li>
+                <li>New prototype at full scale</li>
+                <li>Fully contained system</li>
+                <ul>
+                  <li>Reliable servos</li>
+                  <li>Arduino powered on power supply</li>
+                </ul>
+                <li>Decide how to power all servos</li>
+                <ul>
+                  <li>Seeduino Mega?</li>
+                  <li>Arduino shield?</li>
+                </ul>
+                <li>At least 1-2 more beautiful web pages</li>
+                <li>Individual work and subteam meetings</li>
+              </ul>
+
+              <h2>To fulfill one of our sprint goals, we decided to meet as subteams to get more work done when our full team wasn’t available. At the first ECE subteam meeting, Jason, Charlie, and I worked together to get an integrated prototype of an IR sensor responding to user input and controlling a servo. This interaction between sensor and servo is key to our final design, so it was extremely exciting to be able to have this interaction prototyped and working. We recorded this important milestone in film.</h2>
+
+              <video width="400" height="400" controls>
+                <source src="paddle_test.mp4" type="video/mp4">
+                  Sorry, looks like your browser doesn't support this video! :/
+              </video>
+
+              <h2>Although we have encountered some roadblocks on our journey so far, we are working hard to overcome them. I am optimistic about where we are headed and can’t wait to see where we end up at the end of this sprint!</h2>
+
+              <h2>Best, Meg</h2>
+
+          </div>
+
+          <!-- POST 2: BONNIE -->
+          <hr>
+          <hr>
           <h2>Servo Control</h2>
           <h3>Bonnie Ishiguro</h3>
           <div class="row">
             <div class="group1 col-sm-6 col-md-6">
               6 November 2015 11:15 AM
-            <hr>
+          </div>
+          <hr>
             <div class="text">
               <h2>During Sprint 2, the software team worked on the task of changing the orientation of a ribbon by sweeping its servos to the appropriate positions.  Although the sweeping motion itself is simple to implement, we ran into challenges while integrating our code with the mechanical system.  We wrote our original sweeping algorithm under the assumption that the servos were all oriented the same way.  In our first prototype, however, the servos on top were flipped 180 degrees around the y axis compared to the bottom servos, in addition to being upside down.  This meant that the ranges of motion for a top servo and a bottom servo were offset by 180 degrees, and they could not rotate in the same direction.</h2>
 
@@ -73,6 +126,9 @@
               <h2>A challenge that we faced throughout the sprint was working with power sources for the servos.  We originally powered the servos with the 5V pin on the Arduino.  Our current prototype has six servos for three ribbons, but with this setup we could not control more than three or four servos without seeing unpredictable behavior.  This made debugging code difficult, as it was hard to tell whether a servo was not moving as expected because of a problem with our algorithm or a power-related issue.  Halfway through the sprint, we switched to an external power supply, which allowed us to work with all six servos at once.  Although more reliable, we still experience servo jitter, which seems to be caused by the current voltage level set by the power supply.</h2>
             </div>
 
+          <!-- POST 1: CHARLIE -->
+          <hr>
+          <hr>
           <h2>Advancing the Mechanical System</h2>
           <h3>Charlie Mouton</h3>
           <div class="row">
