@@ -1,7 +1,9 @@
 /*sense_sweep-90
 Don't read sensor values until finished with 0-90 sweep.
-Sweep back to zero.*/
+Sweep back to zero.
+Second implemetation of Sense_and_move, with major improvements*/
 
+//---------------------------------------------------------------Initializations---------------------------------------------------------------
 #include <Servo.h> 
 
 const int NUM_SERVOS = 1;
@@ -21,6 +23,7 @@ int sensor_values = {0};
 
 boolean zero_start = true;
 
+//---------------------------------------------------------------Functions---------------------------------------------------------------
 void setup() 
 { 
   //myservo.attach(servoPin);  // attaches the servo on pin 9 to the servo object
