@@ -1,6 +1,17 @@
 /*sense_and_move_v2
 Don't read sensor values until finished with 0-90 sweep.
-Sweep back to zero.*/
+Sweep back to zero.
+
+Queue is implemented, and multiple sensors/multiple servos implemented.
+In each loop:
+   Each sensor detects. If there is an event, it adds it to the queue. 
+   Queue deploys an event
+
+This is our most recent and most complex implentation, with an effective structure for multiple servos/sensors. 
+Next steps are:
+  1. to improve the queue deploying (partially complete the event and move on to the next, rather than waiting for completion)
+  2. Reduce Sensor noise
+  3. Create a default interaction (perhaps tell time, since we have 12 servos) */
 
 //---------------------------------------------------------------Libraries and Packages---------------------------------------------------------------
 #include <QueueArray.h>
