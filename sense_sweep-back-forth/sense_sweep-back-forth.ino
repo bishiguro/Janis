@@ -18,11 +18,11 @@ Next steps are:
 #include <Servo.h>
 
 //---------------------------------------------------------------Initializations---------------------------------------------------------------
-const int NUM_SERVOS = 3;
-const int NUM_SENSORS = 2;
+const int NUM_SERVOS = 12;
+const int NUM_SENSORS = 6;
 Servo servos[NUM_SERVOS];  // create servo object to control a servo 
-int servoPins[NUM_SERVOS] = {9, 8, 11};         // servo 1
-int sensorPins[NUM_SENSORS] = {A0, A1};       // sensor 1
+int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};         // servo 1
+int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5};       // sensor 1
 int sensorValues[NUM_SENSORS] = {0};      // variable to store the value coming from the sensor
 
 //create structure for storing sensor events. [pin(where pin is the servo index, not the pin it corresponds to on the arduino), value]
@@ -50,7 +50,7 @@ void move_forward(int servoIndex) {
     servos[servoIndex].write(i);
     delay(10);
   }
-  Serial.print("Moved: "); Serial.println(servoIndex);
+  // Serial.print("Moved: "); Serial.println(servoIndex);
   delay(20);
 }
 
@@ -71,20 +71,19 @@ void check_sensors() {
   for (int i = 0; i < NUM_SENSORS; i++) {
     //check sensor value
     sensorValues[i] = analogRead(sensorPins[i]);
-    Serial.println(sensorValues[i]);
-
     //if sensor sees something, create event and add to queue
     if (sensorValues[i] >= 100) {
       //create event to hold sensor pin and val (type is SensorEvent struct)
       sensorEvent event;
       event.pin = i;
-      Serial.print("pin: "); Serial.println(event.pin);
+      Serial.print("sensed on pin: "); Serial.println(event.pin);
       event.val = sensorValues[i];
 
       //enqueue
       queue.enqueue(event);
     }
   }
+
 }
 
 void update_servos() {
@@ -93,7 +92,8 @@ void update_servos() {
     sensorEvent event = queue.dequeue(); //pops last element
     
     int servoNums[] = {2*event.pin, (2*event.pin)+1}; //converts sensor to corresponding servos
-    Serial.print("ServoNums: "); Serial.print(servoNums[0]); Serial.print(", "); Serial.println(servoNums[1]);
+    Serial.print("Queue size: "); Serial.println(queue.count());
+    Serial.print("Moved: "); Serial.println(event.pin);
 
     //moves servos
     for (int i = 0; i < sizeof(servoNums); i++) {
