@@ -29,6 +29,7 @@ int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 int servoPos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+bool servoStates[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //create queue for storing and deploying all sensor events
 QueueArray <servoEvent> queue;
@@ -43,6 +44,30 @@ void setup()
   Serial.begin(9600); 
 } 
 
+void change_state(int servoIndex) {
+  if (servoStates[servoIndex]) {
+    servoStates[servoIndex] = 1;
+  }
+  else {
+    servoStates[servoIndex] = 0;
+  }
+}
+
+void move(int servoIndex) {
+  int currentPos = servoPos[servoIndex];
+  if (servoStates[servoIndex] && currentPos < 90) {
+    servos[servoIndex].write(currentPos + 1);
+    servoPos[servoIndex] = servoPos[servoIndex] + 1;
+  }
+  else if (!servoStates[servoIndex] && currentPos > 0){
+    servos[servoIndex].write(currentPos - 1);
+    servoPos[servoIndex] = servoPos[servoIndex] - 1;
+  }
+  else {
+    change_state(servoIndex);
+  }
+}
+
 //Helper Functions
 void move_forward(int servoIndex, int interval) {
   for(int i = servoPos[servoIndex]; i < servoPos[servoIndex] + interval; i+=1) { // turn 90 degrees so that the paddle appears thick
@@ -50,7 +75,7 @@ void move_forward(int servoIndex, int interval) {
     servoPos[servoIndex] = i;
     delay(1);
   }
-  // Serial.print("Moved: "); Serial.println(servoIndex);
+  Serial.print("Moved: "); Serial.println(servoIndex);
   delay(1);
 }
 
@@ -60,6 +85,7 @@ void move_backward(int servoIndex, int interval) {
     servoPos[servoIndex] = i;
     delay(1);
   }
+  Serial.print("Moved: "); Serial.println(servoIndex);
   delay(1); 
 }
 
@@ -94,22 +120,37 @@ void check_sensors() {
 
 }
 
+void create_pattern() {
+  Serial.print("Creating pattern");
+  for (int i = 0; i < NUM_SENSORS; i++) {
+      //check sensor value
+      queue.enqueue(create_event(i));
+    }
+  for (int i = NUM_SENSORS; i > 0; i--) {
+      //check sensor value
+      queue.enqueue(create_event(i));
+    }
+  }
+
 
 void moveForPin(int pin) {
+  Serial.println("In move for pin");
   int servoNums[] = {2*pin, (2*pin)+1}; //converts sensor to corresponding servos
   for (int i = 0; i < sizeof(servoNums); i++) {
-    if (servoNums[i] < NUM_SERVOS) {
+    // if (servoNums[i] < NUM_SERVOS) {
       move_forward(servoNums[i], 10);
-    }
-    if (servoPos[i] == 90) {
-      move_backward(servoNums[i], 90);
-    }
+  //   }
+  //   if (servoPos[i] == 90) {
+  //     move_backward(servoNums[i], 90);
+  //   }
   }
 }
 
 void eventDequeue() {
   servoEvent event = queue.dequeue(); //pops last element
-  moveForPin(event.pin);
+  Serial.print("dequeued :"); Serial.println(event.pin);
+  // moveForPin(event.pin);
+  move_forward(event.pin, 10);
   if (servoPos[event.pin] != 90) {
     queue.enqueue(create_event(event.pin)); //adds next event to end of queue
   }
@@ -118,16 +159,33 @@ void eventDequeue() {
 }
 
 void update_servos() {
+  Serial.print("Updating Servos");
 //if queue has an event, pop the first object, and move the servos that correspond to the sensor
   if (!queue.isEmpty()) {
-    eventDequeue();    
+    Serial.print("Queue is not empty");
+    eventDequeue();
+  }
+}
+
+void calibrate() {
+// set all servo positions to zero
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    servos[i].write(0);
   }
 }
 
 void loop() 
 //main loop
 {
-  check_sensors();
-  delay(1);
-  update_servos();
+  // // check_sensors();
+  // // // delay(1);
+  // if (queue.isEmpty()) {
+  //   create_pattern();
+  // }
+  // Serial.print("Done creating pattern");
+  // // delay(1);
+  // update_servos();
+  calibrate();
+  move(1);
+  Serial.print(servoPos[1]);
 }
