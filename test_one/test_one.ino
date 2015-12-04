@@ -4,16 +4,11 @@
  * Meg
 */
 
-//---------------------------------------------------------------Initializations---------------------------------------------------------------
 #include <Servo.h> 
 
 Servo myservo;  // create servo object to control a servo 
 int servoPin = 9;         // servo 1
 
-int sensorPin = A0;       // sensor 1
-int sensorValue = 0;      // variable to store the value coming from the sensor
-
-//---------------------------------------------------------------Functions---------------------------------------------------------------
 void setup() 
 { 
   myservo.attach(servoPin);  // attaches the servo on pin 9 to the servo object
