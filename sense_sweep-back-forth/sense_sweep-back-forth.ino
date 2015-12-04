@@ -73,6 +73,8 @@ servoEvent create_event(int pin) {
   event.val = sensorValues[pin];
   event.pos = servoPos[pin];
   event.timestamp = millis();
+
+  Serial.print("created event on pin: "); Serial.println(pin);
   return event;
 }
 
@@ -107,10 +109,10 @@ void moveForPin(int pin) {
 
 void eventDequeue() {
   servoEvent event = queue.dequeue(); //pops last element
+  moveForPin(event.pin);
   if (servoPos[event.pin] != 90) {
     queue.enqueue(create_event(event.pin)); //adds next event to end of queue
   }
-  moveForPin(event.pin);
   Serial.print("Queue size: "); Serial.println(queue.count());
   Serial.print("Moved: "); Serial.println(event.pin);
 }
