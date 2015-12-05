@@ -61,21 +61,24 @@ void sweepBackward(int servoIndex, int interval) {
   }
 }
 
+
+bool ifChangeState(int servoIndex) {
+  servoUnit myServo = servoUnits[servoIndex];
+  bool forwardrange = ((myServo.reverse) && (myServo.pos > 0));
+  bool backwardrange = ((!myServo.reverse) && (myServo.pos < 90));
+  return ! (forwardrange || backwardrange);
+}
+
 void moveServo(int servoIndex) {
   servoUnit myServo = servoUnits[servoIndex];
-  if ((myServo.reverse) && (myServo.pos > 0)) {
-    sweepBackward(servoIndex, 5);
-    // servoWrite(servoIndex, myServo.pos - 1);
-    // Serial.print("BACKWARD");
-  }
-  else if ((!myServo.reverse) && (myServo.pos < 90)) {
-    sweepForward(servoIndex, 5);
-    // servoWrite(servoIndex, myServo.pos + 1);
-    // Serial.print("FORWARD");
-  }
-  else{
+  if (ifChangeState(servoIndex)) {
     servoUnits[servoIndex].reverse = ! servoUnits[servoIndex].reverse;
-    // Serial.print("STATE CHANGE");
+  }
+  else if (myServo.reverse) {
+    sweepBackward(servoIndex, 5);
+  }
+  else {
+    sweepForward(servoIndex, 5);
   }
 }
 
@@ -90,7 +93,7 @@ servoEvent create_event(int pin) {
 }
 
 void create_pattern() {
-  // Serial.print("Creating pattern");
+  Serial.println("Creating pattern");
   // for (int i = 0; i < NUM_SENSORS; i++) {
   for (int i = 2; i <= 7; i++) {
       queue.enqueue(create_event(i));
@@ -103,19 +106,17 @@ void create_pattern() {
 
 void eventDequeue() {
   servoEvent event = queue.dequeue(); //pops last element
-  // Serial.print("dequeued :"); Serial.println(event.pin);
-  // moveForPin(event.pin);
   int pos = event.pos;
-  moveServo(event.pin);
+  int servoNum = event.pin -2;
 
-  //readd to end
-  if ((pos < 90) && (pos > 0)) {
+  if (! ifChangeState(servoNum)) {
+    moveServo(event.pin);
     queue.enqueue(create_event(event.pin)); //adds next event to end of queue
   }
 
   //debugging
-  // Serial.print("Queue size: "); Serial.println(queue.count());
-  // Serial.print("Moved: "); Serial.println(event.pin);
+  Serial.print("Queue size: "); Serial.println(queue.count());
+  Serial.print("Moved: "); Serial.println(event.pin);
 }
 
 void update_servos() {
@@ -124,6 +125,8 @@ void update_servos() {
     eventDequeue();
   }
 }
+
+//-------------------------------------------------------------------Main loops --------------------------------------------------------------------------------------------
 
 void setup() 
 {
@@ -134,24 +137,23 @@ void setup()
   servoSetup();
 }
 
-void loop() 
-//main loop
-{
+void loopDebug() {
+  for (int i = 0; i<=NUM_SERVOS; i++) {
+    moveServo(sensorPins[i]);
+  }
+}
+
+void mainloop() {
   if (queue.isEmpty()) {
     create_pattern();
   }
   update_servos();
 
-  // for (int i = 0; i < 90; i++) {
-  //   servoWrite(5, i);
-  //   servoWrite(5, i);
-  //   delay(20);
-  //   // Serial.print(servo1.pos);
-  // }
-  // for (int i = 90; i > 0; i--) {
-  //   servoWrite(5, i);
-  //   servoWrite(5, i);
-  //   delay(20);
+}
 
-  // }
+void loop() 
+//main loop
+{
+  main();
+  // loopDebug();
 }
