@@ -28,7 +28,6 @@ void servoWrite(servoUnit myServo, int pos) {
   myServo.pos = pos;
   
   servos[servoPins[myServo.pin]-2].write(pos);
-  Serial.print(myServo.servo.read());
 }
 
 void moveServo(servoUnit myServo) {
@@ -58,12 +57,12 @@ void loop()
 //main loop
 {
   for (int i = 0; i < 90; i++) {
-    servoWrite(servoUnit[5], i);
+    servoWrite(servoUnits[5], i);
     delay(20);
     // Serial.print(servo1.pos);
   }
   for (int i = 90; i > 0; i--) {
-    servoWrite(servoUnit[5], i);
+    servoWrite(servoUnits[5], i);
     delay(20);
   }
 }
