@@ -57,6 +57,6 @@ void loop()
       servos[1].write(pos1[1]);
       ticker[1] = 0;
     }
-    delay(15);                           // waits for the servo to get there
+    delay(10);                           // waits for the servo to get there
     Serial.println(ticker[0]);
   }
