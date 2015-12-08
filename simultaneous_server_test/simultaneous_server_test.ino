@@ -6,7 +6,6 @@ const int NUM_SERVOS = 12;
 const int NUM_SENSORS = 6;
 
 Servo servos[NUM_SERVOS];
-int pos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 int sensorPins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
@@ -36,42 +35,40 @@ void setup()
 
 bool ifChangeState(int servoIndex) {
   ServoUnit myServo = servoUnits[servoIndex];
-  bool forward = ((myServo.reverse) && (myServo.pos > 0));
-  bool backward = ((!myServo.reverse) && (myServo.pos < 90));
+  bool backward = ((myServo.reverse) && (myServo.pos > 0));
+  bool forward = ((!myServo.reverse) && (myServo.pos < 90));
   return ! (forward || backward);
 }
 
 void getServoResponse(int sensorNum) {
   sensorValues[sensorNum] = analogRead(sensorPins[sensorNum]);
-  ServoUnit myServo = servoUnits[sensorNum];
-  int servoNum = sensorNum * 2;
 
   if (sensorValues[sensorNum] > 150) { // if the sensor is reading a value
 
-    if (ifChangeState(servoNum)) {
-      myServo.reverse = ! myServo.reverse;
+    if (ifChangeState(sensorNum * 2)) {
+      servoUnits[sensorNum].reverse = ! servoUnits[sensorNum].reverse;
     }
-
-    if (myServo.reverse) {
-      writeToServo(servoNum, pos[servoNum] - 1);
+    else if (servoUnits[sensorNum].reverse) {
+      writeToServos(sensorNum, servoUnits[sensorNum].pos - 1);
     }
     else {
-      writeToServo(servoNum, pos[servoNum] + 1);
+      writeToServos(sensorNum, servoUnits[sensorNum].pos + 1);
     }
-
   }
-  
+
   else { // move the servo back to the zero position
-    writeToServo(servoNum, 0);
+    writeToServos(sensorNum, 0);
   }
 }
 
-void writeToServo(int servoNum, int servoPos) {
-  pos[servoNum] = servoPos;
-  pos[servoNum + 1] = servoPos;
+void writeToServos(int sensorNum, int servoPos) {
+  int servoNum = sensorNum * 2;
 
-  servos[servoNum].write(pos[servoNum]);
-  servos[servoNum + 1].write(pos[servoNum + 1]);
+  servoUnits[servoNum].pos = servoPos;
+  servoUnits[servoNum + 1].pos = servoPos;
+
+  servos[servoNum].write(servoUnits[servoNum].pos);
+  servos[servoNum + 1].write(servoUnits[servoNum + 1].pos);
 }
 
 void loop()
@@ -80,5 +77,4 @@ void loop()
     getServoResponse(i);
   }
   delay(10); // waits for the servo to get there
-  //Serial.println(pos[0]);
 }
