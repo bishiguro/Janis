@@ -1,7 +1,3 @@
-/*flag_state_test_two
- * Now with two servos and sensors!
-*/
-
 #include <Servo.h>
 
 const int POS_MAX = 90;  //how many increments it takes to get from one position to another
@@ -23,32 +19,33 @@ void setup()
   Serial.begin(9600);
 }
 
-void writeToServo(int sensorNum) {
+void getServoResponse(int sensorNum) {
   sensorValues[sensorNum] = analogRead(sensorPins[sensorNum]);
-  int servoNum1 = sensorNum * 2;
-  int servoNum2 = servoNum1 + 1;
+  int servoNum = sensorNum * 2;
 
-  if ((sensorValues[sensorNum] > 150) && (pos[servoNum1] < POS_MAX)) {
-    pos[servoNum1] += 1;
-    pos[servoNum2] += 1;
+  if ((sensorValues[sensorNum] > 150) && (pos[servoNum] < POS_MAX)) {
+    writeToServo(servoNum, pos[servoNum] + 1);
   }
-  else if ((sensorValues[sensorNum] > 150) && (pos[servoNum1] >= POS_MAX)) {
-    pos[servoNum1] = 90;
-    pos[servoNum2] = 90;
+  else if ((sensorValues[sensorNum] > 150) && (pos[servoNum] >= POS_MAX)) {
+    writeToServo(servoNum, 90);
   }
   else {
-    pos[servoNum1] = 0;
-    pos[servoNum2] = 0;
+    writeToServo(servoNum, 0);
   }
+}
 
-  servos[servoNum1].write(pos[servoNum1]);
-  servos[servoNum2].write(pos[servoNum2]);
+void writeToServo(int servoNum, int servoPos) {
+  pos[servoNum] = servoPos;
+  pos[servoNum + 1] = servoPos;
+
+  servos[servoNum].write(pos[servoNum]);
+  servos[servoNum + 1].write(pos[servoNum + 1]);
 }
 
 void loop()
 {
   for (int i = 0; i< NUM_SENSORS; i++) {
-    writeToServo(i);
+    getSensorResponse(i);
   }
   delay(10);                           // waits for the servo to get there
   Serial.println(pos[0]);
