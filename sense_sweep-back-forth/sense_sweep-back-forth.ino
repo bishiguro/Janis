@@ -16,23 +16,23 @@ Next steps are:
 //---------------------------------------------------------------Libraries and Packages---------------------------------------------------------------
 #include <QueueArray.h>
 #include <Servo.h>
+#include <servoEventStructure.h> //our structure type definition
+
 
 //---------------------------------------------------------------Initializations---------------------------------------------------------------
 const int NUM_SERVOS = 12;
 const int NUM_SENSORS = 6;
+int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}; // servo 1
 Servo servos[NUM_SERVOS];  // create servo object to control a servo 
-int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};         // servo 1
-int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5};       // sensor 1
-int sensorValues[NUM_SENSORS] = {0};      // variable to store the value coming from the sensor
 
-//create structure for storing sensor events. [pin(where pin is the servo index, not the pin it corresponds to on the arduino), value]
-typedef struct {
-  int pin;
-  int val;
-} sensorEvent;
+int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
+int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
+
+int servoPos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+bool servoStates[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //create queue for storing and deploying all sensor events
-QueueArray <sensorEvent> queue;
+QueueArray <servoEvent> queue;
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
 //Setup
@@ -44,27 +44,65 @@ void setup()
   Serial.begin(9600); 
 } 
 
-//Helper Functions
-void move_forward(int servoIndex) {
-  for(int i = 0; i < 90; i+=1) { // turn 90 degrees so that the paddle appears thick
-    servos[servoIndex].write(i);
-    delay(10);
+void change_state(int servoIndex) {
+  if (servoStates[servoIndex]) {
+    servoStates[servoIndex] = 1;
   }
-  // Serial.print("Moved: "); Serial.println(servoIndex);
-  delay(20);
+  else {
+    servoStates[servoIndex] = 0;
+  }
 }
 
-void move_backward(int servoIndex) {
-  for(int i = 90; i >=0; i-=1) { // turn 90 degrees back so that the paddle appears thin
-    servos[servoIndex].write(i);
-    delay(10);
+void move(int servoIndex) {
+  int currentPos = servoPos[servoIndex];
+  if (servoStates[servoIndex] && currentPos < 90) {
+    servos[servoIndex].write(currentPos + 1);
+    servoPos[servoIndex] = servoPos[servoIndex] + 1;
   }
-  delay(20); 
+  else if (!servoStates[servoIndex] && currentPos > 0){
+    servos[servoIndex].write(currentPos - 1);
+    servoPos[servoIndex] = servoPos[servoIndex] - 1;
+  }
+  else {
+    change_state(servoIndex);
+  }
+}
+
+//Helper Functions
+void move_forward(int servoIndex, int interval) {
+  for(int i = servoPos[servoIndex]; i < servoPos[servoIndex] + interval; i+=1) { // turn 90 degrees so that the paddle appears thick
+    servos[servoIndex].write(i);
+    servoPos[servoIndex] = i;
+    delay(1);
+  }
+  Serial.print("Moved: "); Serial.println(servoIndex);
+  delay(1);
+}
+
+void move_backward(int servoIndex, int interval) {
+  for(int i = servoPos[servoIndex]; i > servoPos[servoIndex] - interval; i-=1) { // turn 90 degrees back so that the paddle appears thin
+    servos[servoIndex].write(i);
+    servoPos[servoIndex] = i;
+    delay(1);
+  }
+  Serial.print("Moved: "); Serial.println(servoIndex);
+  delay(1); 
 }
 
 //bool if_sees_object() {
 // returns if the sensor sees an object. Not implemented yet, but we want to eventually have this filter out some noise. Right now it's pretty noisy because it 'sees' an object even if only one sensor value is above 100.
 //}
+
+servoEvent create_event(int pin) {
+  servoEvent event;
+  event.pin = pin;
+  event.val = sensorValues[pin];
+  event.pos = servoPos[pin];
+  event.timestamp = millis();
+
+  Serial.print("created event on pin: "); Serial.println(pin);
+  return event;
+}
 
 void check_sensors() {
   //loop through all sensors
@@ -73,42 +111,81 @@ void check_sensors() {
     sensorValues[i] = analogRead(sensorPins[i]);
     //if sensor sees something, create event and add to queue
     if (sensorValues[i] >= 100) {
-      //create event to hold sensor pin and val (type is SensorEvent struct)
-      sensorEvent event;
-      event.pin = i;
-      Serial.print("sensed on pin: "); Serial.println(event.pin);
-      event.val = sensorValues[i];
-
+      //create event to hold sensor pin and val (type is servoEvent struct)
+      Serial.print("sensed on pin: "); Serial.println(i);
       //enqueue
-      queue.enqueue(event);
+      queue.enqueue(create_event(i));
     }
   }
 
 }
 
+void create_pattern() {
+  Serial.print("Creating pattern");
+  for (int i = 0; i < NUM_SENSORS; i++) {
+      //check sensor value
+      queue.enqueue(create_event(i));
+    }
+  for (int i = NUM_SENSORS; i > 0; i--) {
+      //check sensor value
+      queue.enqueue(create_event(i));
+    }
+  }
+
+
+void moveForPin(int pin) {
+  Serial.println("In move for pin");
+  int servoNums[] = {2*pin, (2*pin)+1}; //converts sensor to corresponding servos
+  for (int i = 0; i < sizeof(servoNums); i++) {
+    // if (servoNums[i] < NUM_SERVOS) {
+      move_forward(servoNums[i], 10);
+  //   }
+  //   if (servoPos[i] == 90) {
+  //     move_backward(servoNums[i], 90);
+  //   }
+  }
+}
+
+void eventDequeue() {
+  servoEvent event = queue.dequeue(); //pops last element
+  Serial.print("dequeued :"); Serial.println(event.pin);
+  // moveForPin(event.pin);
+  move_forward(event.pin, 10);
+  if (servoPos[event.pin] != 90) {
+    queue.enqueue(create_event(event.pin)); //adds next event to end of queue
+  }
+  Serial.print("Queue size: "); Serial.println(queue.count());
+  Serial.print("Moved: "); Serial.println(event.pin);
+}
+
 void update_servos() {
+  Serial.print("Updating Servos");
 //if queue has an event, pop the first object, and move the servos that correspond to the sensor
   if (!queue.isEmpty()) {
-    sensorEvent event = queue.dequeue(); //pops last element
-    
-    int servoNums[] = {2*event.pin, (2*event.pin)+1}; //converts sensor to corresponding servos
-    Serial.print("Queue size: "); Serial.println(queue.count());
-    Serial.print("Moved: "); Serial.println(event.pin);
+    Serial.print("Queue is not empty");
+    eventDequeue();
+  }
+}
 
-    //moves servos
-    for (int i = 0; i < sizeof(servoNums); i++) {
-      if (servoNums[i] < NUM_SERVOS) {
-        move_forward(servoNums[i]);
-        move_backward(servoNums[i]);
-      }
-    }
+void calibrate() {
+// set all servo positions to zero
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    servos[i].write(0);
   }
 }
 
 void loop() 
 //main loop
 {
-  check_sensors();
-  delay(1);
-  update_servos();
+  // // check_sensors();
+  // // // delay(1);
+  // if (queue.isEmpty()) {
+  //   create_pattern();
+  // }
+  // Serial.print("Done creating pattern");
+  // // delay(1);
+  // update_servos();
+  calibrate();
+  move(1);
+  Serial.print(servoPos[1]);
 }
