@@ -42,8 +42,8 @@ void readSensor(int sensorNum) {
       servos[servoNum].write(pos1[ticker[servoNum]]);
     }
     else {
-      servos[servoNum].write(pos1[sensorNum]);
-      ticker[servoNum] = sensorNum;
+      servos[servoNum].write(pos1[0]);
+      ticker[servoNum] = 0;
     }
 }
 
