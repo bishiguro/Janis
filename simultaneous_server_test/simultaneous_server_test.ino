@@ -12,7 +12,7 @@ Servo servos[NUM_SERVOS];
 int pos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0};
 int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7};
 int sensorPins[NUM_SENSORS] = {A6, A5, A4};
-int sensorValues[NUM_SENSORS] = {0, 0};
+int sensorValues[NUM_SENSORS] = {0, 0, 0};
 
 void setup()
 {
@@ -26,23 +26,23 @@ void setup()
 void writeToServo(int sensorNum) {
   sensorValues[sensorNum] = analogRead(sensorPins[sensorNum]);
   int servoNum1 = sensorNum * 2;
-  int servoNum2 = sensorNum1 + 1;
+  int servoNum2 = servoNum1 + 1;
 
   if ((sensorValues[sensorNum] > 150) && (pos[servoNum1] < POS_MAX)) {
     pos[servoNum1] += 1;
-    pos[servoNum12 += 1;
+    pos[servoNum2] += 1;
   }
   else if ((sensorValues[sensorNum] > 150) && (pos[servoNum1] >= POS_MAX)) {
     pos[servoNum1] = 90;
-    pos[servoNum12 = 90;
+    pos[servoNum2] = 90;
   }
   else {
     pos[servoNum1] = 0;
-    pos[servoNum12 = 0;
+    pos[servoNum2] = 0;
   }
 
   servos[servoNum1].write(pos[servoNum1]);
-  servos[servoNum2.write(pos[servoNum2);
+  servos[servoNum2].write(pos[servoNum2]);
 }
 
 void loop()
