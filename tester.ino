@@ -66,9 +66,10 @@ void check_and_print_sensors() {
     //check sensor value
     sensorValues[i] = analogRead(sensorPins[i]);
     //if sensor sees something, create event and add to queue
-    Serial.print(" Pin: "); Serial.print(i); Serial.print(", "); Serial.print(sensorValues[i]);
+    Serial.print("|  "); Serial.print(sensorValues[i]); Serial.print("  |");
     }
   Serial.println("");
+  delay(200);
 }
 
 void sweep_all_sensors() {
@@ -91,8 +92,9 @@ void calibrate() {
 void loop() 
 //main loop
 {
-  calibrate();
-  delay(20);
-  sweep_all_sensors();
+  // calibrate();
+  // delay(20);
+  // sweep_all_sensors();
+  check_and_print_sensors();
 }
 
