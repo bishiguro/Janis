@@ -7,7 +7,7 @@
 #include <Servo.h> 
 
 Servo myservo;  // create servo object to control a servo 
-int servoPin = 12;         // servo 1
+int servoPin = 9;         // servo 1
 
 void setup() 
 { 
