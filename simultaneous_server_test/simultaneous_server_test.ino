@@ -5,14 +5,14 @@
 #include <Servo.h>
 
 const int POS_MAX = 90;  //how many increments it takes to get from one position to another
-const int NUM_SERVOS = 6;
-const int NUM_SENSORS = 3;
+const int NUM_SERVOS = 12;
+const int NUM_SENSORS = 6;
 
 Servo servos[NUM_SERVOS];
-int pos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0};
-int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7};
-int sensorPins[NUM_SENSORS] = {A6, A5, A4};
-int sensorValues[NUM_SENSORS] = {0, 0, 0};
+int pos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+int sensorPins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
+int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 void setup()
 {
