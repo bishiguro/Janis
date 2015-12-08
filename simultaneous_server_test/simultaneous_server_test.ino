@@ -31,32 +31,27 @@ void setup()
   Serial.begin(9600);
 }
 
+void readSensor(int sensorNum) {
+  sensorValues[sensorNum] = analogRead(sensorPins[0]);
+  int servoNum = (sensorNum*2) + 2;
+
+    if (sensorValues[sensorNum] > 80) {
+      if (ticker[servoNum] < fidelity) {
+        ticker[servoNum] += 1;
+      }
+      servos[servoNum].write(pos1[ticker[servoNum]]);
+    }
+    else {
+      servos[servoNum].write(pos1[sensorNum]);
+      ticker[servoNum] = sensorNum;
+    }
+}
+
 void loop()
 {
-  sensorValues[0] = analogRead(sensorPins[0]);
-  sensorValues[1] = analogRead(sensorPins[1]);
-
-    if (sensorValues[0] > 80) {
-      if (ticker[0] < fidelity) {
-        ticker[0] += 1;
-      }
-      servos[0].write(pos1[ticker[0]]);
-    }
-    else {
-      servos[0].write(pos1[0]);
-      ticker[0] = 0;
-    }
-
-    if (sensorValues[1] > 80) {
-      if (ticker[1] < fidelity) {
-        ticker[1] += 1;
-      }
-      servos[1].write(pos1[ticker[1]]);
-    }
-    else {
-      servos[1].write(pos1[1]);
-      ticker[1] = 0;
-    }
-    delay(10);                           // waits for the servo to get there
-    Serial.println(ticker[0]);
+  for (int i = 0; i<=NUM_SENSORS; i++) {
+    readSensor(i);
   }
+  delay(10);                           // waits for the servo to get there
+  Serial.println(ticker[0]);
+}
