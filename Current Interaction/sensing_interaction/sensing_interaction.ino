@@ -40,10 +40,23 @@ bool ifChangeState(int servoIndex) {
   return ! (forward || backward);
 }
 
-void getServoResponse(int sensorNum) {
-  sensorValues[sensorNum] = analogRead(sensorPins[sensorNum]);
+bool ifSensed(int sensorNum) {
+  int threshold = 150;
+  return (analogRead(sensorPins[sensorNum]) > threshold);
+}
 
-  if (sensorValues[sensorNum] > 150) { // if the sensor is reading a value
+void writeToServos(int sensorNum, int servoPos) {
+  int servoPair[2] = {(sensorNum*2), (sensorNum*2) + 1};
+
+  for (int i = 0; i < sizeof(servoPair); i++) {
+    servoUnits[servoPair[i]].pos = servoPos;
+    servos[servoPair[i]].write(servoUnits[servoPair[i]].pos);
+  }
+}
+
+void getServoResponse(int sensorNum) {
+
+  if (ifSensed(sensorNum)) { // if the sensor is reading a value
 
     if (ifChangeState(sensorNum * 2)) {
       servoUnits[sensorNum].reverse = ! servoUnits[sensorNum].reverse;
@@ -59,16 +72,6 @@ void getServoResponse(int sensorNum) {
   else { // move the servo back to the zero position
     writeToServos(sensorNum, 0);
   }
-}
-
-void writeToServos(int sensorNum, int servoPos) {
-  int servoNum = sensorNum * 2;
-
-  servoUnits[servoNum].pos = servoPos;
-  servoUnits[servoNum + 1].pos = servoPos;
-
-  servos[servoNum].write(servoUnits[servoNum].pos);
-  servos[servoNum + 1].write(servoUnits[servoNum + 1].pos);
 }
 
 void loop()
