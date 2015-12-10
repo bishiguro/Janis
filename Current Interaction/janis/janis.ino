@@ -10,7 +10,7 @@ Servo servos[NUM_SERVOS];
 int servo_pins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 int sensor_pins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
 State janis;
-int sensor_vals[NUM_SENSORS];
+bool sensor_vals[NUM_SENSORS];
 
 
 //-----------------------------------------------------------------------------Main Loops---------------------------------------------------------------------------
@@ -36,17 +36,15 @@ void setup()
 }
 
 void getSensorInput() {
+  int threshold;
   for (int i = 0; i < NUM_SENSORS; i++) {
-    sensor_vals[i] = analogRead(sensor_pins[i]);
+    sensor_vals[i] = (analogRead(sensor_pins[i]) > threshold);
   }
 }
 
-bool isAboveThreshold() {
-  int threshold = 150;
-  for (int i = 0; i <NUM_SENSORS; i++) {
-    if (sensor_vals[i] > threshold)
-      return true;
-  }
+bool ifDetect() {
+  for (int i = 0; i <NUM_SENSORS; i++)
+    if (sensor_vals[i]) return true;
   return false;
 }
 
@@ -68,13 +66,19 @@ void increment(int servo_num) {
     janis.pos[servo_num] += 1;
 }
 
-void updateSensorState(int sensor_num) {
-  servo_pair[] = {(sensor_num * 2), (sensor_num * 2) + 1};
+void sweepBackForthControl(int sensor_num) {
+  int servo_pair[] = {(sensor_num * 2), (sensor_num * 2) + 1};
   for (int i = 0; i < sizeof(servo_pair); i ++) {
     if (ifChangeState(servo_pair[i]))
       changeDir(servo_pair[i]);
     else
       increment(servo_pair[i]);
+  }
+}
+
+void updateSensorState() {
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    if (sensor_vals[i]) sweepBackForthControl(i);
   }
 }
 
