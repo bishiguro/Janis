@@ -36,7 +36,18 @@ void setup()
 }
 
 void getSensorInput() {
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    sensor_vals[i] = analogRead(sensor_pins[i]);
+  }
+}
 
+bool ifDetect() {
+  int threshold = 150;
+  for (int i = 0; i <NUM_SENSORS; i++) {
+    if (sensor_vals[i] > threshold)
+      return true;
+  }
+  return false;
 }
 
 void updateSensorState() {
@@ -48,14 +59,14 @@ void updateTimeState() {
 }
 
 void displayState() {
-  
+
 }
 
 void loop()
 {
   getSensorInput();
 
-  if ifDetect() {
+  if (ifDetect()) {
     updateSensorState();
   }
   else {
