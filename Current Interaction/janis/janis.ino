@@ -41,7 +41,7 @@ void getSensorInput() {
   }
 }
 
-bool ifDetect() {
+bool isAboveThreshold() {
   int threshold = 150;
   for (int i = 0; i <NUM_SENSORS; i++) {
     if (sensor_vals[i] > threshold)
@@ -50,8 +50,32 @@ bool ifDetect() {
   return false;
 }
 
-void updateSensorState() {
+bool ifChangeState(int servo_num) {
+  //if a servo needs to change direction
+  bool backward_range = (janis.is_reverse[servo_num] && (janis.pos[servo_num]> 0));
+  bool forward_range = ((!janis.is_reverse[servo_num]) && (janis.pos[servo_num] < 90));
+  return ! (forward_range || backward_range);
+}
 
+void changeDir(int servo_num) {
+  janis.is_reverse[servo_num] = (! janis.is_reverse[servo_num] );
+}
+
+void increment(int servo_num) {
+  if (janis.is_reverse[servo_num])
+    janis.pos[servo_num] -= 1;
+  else
+    janis.pos[servo_num] += 1;
+}
+
+void updateSensorState(int sensor_num) {
+  servo_pair[] = {(sensor_num * 2), (sensor_num * 2) + 1};
+  for (int i = 0; i < sizeof(servo_pair); i ++) {
+    if (ifChangeState(servo_pair[i]))
+      changeDir(servo_pair[i]);
+    else
+      increment(servo_pair[i]);
+  }
 }
 
 void updateTimeState() {
@@ -59,19 +83,18 @@ void updateTimeState() {
 }
 
 void displayState() {
-
+  for (int i = 0; i < NUM_SERVOS; i++)
+    servos[i].write(janis.pos[i]);
 }
 
 void loop()
 {
   getSensorInput();
 
-  if (ifDetect()) {
+  if (ifDetect())
     updateSensorState();
-  }
-  else {
+  else
     updateTimeState();
-  }
 
   displayState();
 }
