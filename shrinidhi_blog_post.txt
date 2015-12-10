@@ -1,0 +1,15 @@
+Title: Sometimes you need “sketchiness”
+
+<Insert “Working Away” https://drive.google.com/open?id=0B1mERpAdoVPAaTJPd3g1UjM3OWc >
+
+	This last week, Bonnie and I ran into brick walls over and over on the coding team. We had brainstormed and created a queue structure that we thought made most sense for our problem, but we didn’t have anything to show for it. Though our code structure was beautiful, we didn’t have an interaction that simply worked.  Janis, try as we might, was jerky and slow(see video below).
+
+<Insert “Slow Jerky Janis” : https://drive.google.com/open?id=0BwMH1CAB1V1yTzFiWjJ2cU02azQ >
+
+	Eventually, the rest of the team sensed our frustration. Meg and Charlie gently prodded us to try something else. However, having invested in the queue structure for so long, Bonnie and I hesitated. Finally, Meg and Charlie took to code on their own. They came back with a simpler, perhaps sketchier code that worked! It created a simple interaction and fun to play with.
+
+<Insert “Excited Bonnie” : https://drive.google.com/open?id=0BwMH1CAB1V1yemRnMEs4cENoT1U >
+
+	This pivot was a motivation surge for the entire team. Seeing a working interaction that was fun to play with restored our faith.  Bonnie couldn’t stop jumping in front of Janis(see video above)! It was also a very humbling moment for me. It reminded me that as invested as I may be in a particular direction, sometimes, I need someone else to kill my baby. A third person’s point of view is extremely important for this. 
+
+	It also reminded me that “sketchiness “is not always bad. Though as coders, Bonnie and I focus on organized and clean code, quick and messy code is not to be underestimated. Sometimes, its simplicity lends itself to fast prototyping. In my future projects, an outsider, especially a non-coder’s feedback may be critical. In fact, not only is their feedback critical, but their code as well.
