@@ -24,7 +24,8 @@ void hourPaddle() {
 	if (curr_hour != prev_hour) {
 		janis.pos[prev_hour - 1] = 0;
 	}
-	janis.pos[curr_hour-1] = 90;
+	singleIncrementServo(curr_hour-1, 45);
+	// janis.pos[curr_hour-1] = 90;
 }
 
 void fiveMinutePaddle() {
@@ -32,5 +33,6 @@ void fiveMinutePaddle() {
 	if (curr_minute != prev_minute) {
 		janis.pos[prev_minute/5] = 0;
 	}
-	janis.pos[curr_minute/5] = 180;
+	singleIncrementServo(curr_minute/5, 90);
+	//janis.pos[curr_minute/5] = 180;
 }

@@ -1,9 +1,9 @@
 //------Servo Control Helper Functions------------------
 
-bool ifChangeState(int servo_num) {
+bool ifChangeState(int servo_num, int max_pos) {
   //if a servo needs to change direction
   bool backward_range = (janis.is_reverse[servo_num] && (janis.pos[servo_num]> 0));
-  bool forward_range = ((!janis.is_reverse[servo_num]) && (janis.pos[servo_num] < 90));
+  bool forward_range = ((!janis.is_reverse[servo_num]) && (janis.pos[servo_num] < max_pos));
   return ! (forward_range || backward_range);
 }
 
