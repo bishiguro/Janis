@@ -29,15 +29,6 @@ int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
-//Setup
-void setup() 
-{
-  for (int i = 0; i < NUM_SERVOS; i++) { //loops through all sensors
-      servos[i].attach(servoPins[i]);  // attaches the servo on pin 9 to the servo object  
-  }
-  Serial.begin(9600); 
-} 
-
 //Helper Functions
 void move_forward(int servoIndex, int interval) {
   //move servo forwards the given interval
@@ -89,12 +80,30 @@ void calibrate() {
   }
 }
 
+void attachServos() {
+  for (int i = 0; i < NUM_SERVOS; i++) { //loops through all sensors
+    servos[i].attach(servoPins[i]);  // attaches the servo on pin 9 to the servo object  
+  }
+}
+
+//-----------------------------------------------------------Main Arduino Functions-------------------------------------------------------------------------
+
+//Setup
+void setup() 
+{
+  attachServos();
+  Serial.begin(9600);
+  calibrate();
+
+} 
+
+
 void loop() 
 //main loop
 {
   // calibrate();
   // delay(20);
   // sweep_all_sensors();
-  check_and_print_sensors();
+  // check_and_print_sensors();
 }
 
