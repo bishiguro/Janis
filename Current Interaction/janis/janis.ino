@@ -14,6 +14,7 @@ int sensor_pins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
 Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
+bool sensing;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -54,7 +55,8 @@ void updateSensorState( void (*f)(int) ) {
 }
 
 void updateTimeState() {
-
+  hourPaddle();
+  fiveMinutePaddle();
 }
 //------------------Display State------------------------------------------
 void displayState() {
@@ -71,13 +73,25 @@ void setup()
   janis = initializeJanis();
 }
 
+void calibrate() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    janis.pos[i] = 0;
+  }
+}
+
 void loop()
 {
   getSensorInput();
 
-  if (ifDetect())
+  if (ifDetect()) {
+    sensing = true;
     updateSensorState(sweepBackForthControl);
+  }
+  else if (sensing) {
+    calibrate();
+  }
   else
+    sensing = false;
     updateTimeState();
     
   displayState();
