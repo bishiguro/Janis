@@ -7,13 +7,13 @@
 //-----------------------------------------------------------------------------Initializations---------------------------------------------------------------------------
 
 const int POS_MAX = 90;  //how many increments it takes to get from one position to another
-const int NUM_SERVOS = 12;
-const int NUM_SENSORS = 6;
+const int NUM_SERVOS = 6;
+const int NUM_SENSORS = 3;
 
 Servo servos[NUM_SERVOS];
-int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-int sensorPins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
-int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
+int servoPins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7};
+int sensorPins[NUM_SENSORS] = {A5, A4, A3};
+int sensorValues[NUM_SENSORS] = {0, 0, 0};
 ServoUnit servoUnits[NUM_SERVOS];
 
 ServoUnit createServo(int pin) {
