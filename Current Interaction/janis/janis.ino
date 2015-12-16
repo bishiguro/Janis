@@ -167,16 +167,7 @@ void loop()
   if (sensing) {
     if (is_initializing) {
       calibrate();
-// <<<<<<< HEAD
-//       initializeTimeState();
-//       sensing = false;
-//     }
-//     else {
-//       sensing = false;
-//       updateTimeState();
-// =======
       is_initializing = false;
-// >>>>>>> origin/interaction_test
     }
     else updateSensorState(sweepBackForthControl);
     delay(5);
@@ -185,8 +176,7 @@ void loop()
   //If update Default Interaction
   if (!sensing) {
     if (is_initializing) initializeTimeStateInSteps();
-    else sweepDefault();
-    sweepDefault();
+    else updateTimeState();
     delay(15);
   }
 
