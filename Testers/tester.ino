@@ -29,18 +29,7 @@ int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
-<<<<<<< HEAD
-//Setup
-void setup() 
-{
-  for (int i = 0; i < NUM_SERVOS; i++) { //loops through all sensors
-      servos[i].attach(servoPins[i]);  // attaches the servo on pin 9 to the servo object  
-  }
-  Serial.begin(9600); 
-} 
 
-// //Helper Functions
-=======
 //Helper Functions
 void move_forward(int servoIndex, int interval) {
   //move servo forwards the given interval
@@ -52,7 +41,6 @@ void move_forward(int servoIndex, int interval) {
   // Serial.print("Moved: "); Serial.println(servoIndex);
   delay(1);
 }
->>>>>>> interaction_test
 
 
 void check_and_print_sensors() {
@@ -104,14 +92,9 @@ void setup()
 void loop() 
 //main loop
 {
-  // calibrate();
-  // delay(20);
-<<<<<<< HEAD
+  calibrate();
+  delay(20);
   // test_all();
-  check_and_print_sensors();
-=======
-  // sweep_all_sensors();
   // check_and_print_sensors();
->>>>>>> interaction_test
 }
 

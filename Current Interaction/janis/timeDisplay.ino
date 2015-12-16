@@ -4,9 +4,9 @@ int prev_hour;
 int prev_minute;
 int prev_second;
 
+
 void initializeTime() {
-	for (int s = 0; s <=NUM_SERVOS; s++) {
-		
+	for (int s = 0; s <=NUM_SERVOS; s++) {	
 	}
 }
 
