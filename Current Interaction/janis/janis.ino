@@ -136,11 +136,12 @@ void loop()
     updateSensorState(sweepBackForthControl);
     // printState();
   }
-  
+
   else {
     if (sensing) {
       calibrate();
       initializeTimeState();
+      sensing = false;
     }
     else {
       sensing = false;
