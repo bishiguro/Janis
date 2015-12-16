@@ -60,6 +60,7 @@ void test_all() {
   for (int s = 0; s < NUM_SERVOS; s += 1) {
     for (int i = 0; i < 90; i += 1) {
       servos[s].write(i);
+      delay(10);
     }
   }
 }
@@ -92,9 +93,9 @@ void setup()
 void loop() 
 //main loop
 {
-  calibrate();
-  delay(20);
+  // calibrate();
+  // delay(20);
   // test_all();
-  // check_and_print_sensors();
+  check_and_print_sensors();
 }
 
