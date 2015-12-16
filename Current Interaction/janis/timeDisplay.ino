@@ -4,11 +4,8 @@ int prev_hour;
 int prev_minute;
 int prev_second;
 
-
 void initializeTime() {
-	setTime(12,0,0,12,17,2015);
-	// for (int s = 0; s <=NUM_SERVOS; s++) {	
-	// }
+	setTime(1,30,0,12,17,2015); // start time
 }
 
 void printTime() { // update the clock
@@ -31,8 +28,7 @@ void hourPaddle() {
 	if (curr_hour != prev_hour) {
 		janis.pos[prev_hour - 1] = 0;
 	}
-	singleIncrementServo(curr_hour-1, 45);
-	// janis.pos[curr_hour-1] = 90;
+	janis.pos[curr_hour-1] = 90; // hold the hour paddle at 90 deg
 }
 
 void fiveMinutePaddle() {
@@ -40,6 +36,11 @@ void fiveMinutePaddle() {
 	if (curr_minute != prev_minute) {
 		janis.pos[prev_minute/5] = 0;
 	}
-	singleIncrementServo(curr_minute/5, 90);
-	//janis.pos[curr_minute/5] = 180;
+
+	if((hourFormat12()-1) != (curr_minute/5)) { // prioritize the hour over the minute
+		singleIncrementServo(curr_minute/5, 90);
+	}
+	for (int i = curr_minute/5 - 1; i > -1; i--) { // rotate all preceding minute paddles
+		singleIncrementServo(i, 90);
+	}
 }

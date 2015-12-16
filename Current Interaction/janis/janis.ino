@@ -10,8 +10,8 @@
 //-----------------------------------------------------------------------------Initializations---------------------------------------------------------------------------
 
 //Already Included: POS_MAX, NUM_SERVOS, NUM_SENSORS
-int servo_pins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-int sensor_pins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
+int servo_pins[NUM_SERVOS] = {13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+int sensor_pins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5};
 
 //State Variables
 Servo servos[NUM_SERVOS];
@@ -27,15 +27,6 @@ State initializeJanis() {
   memset(janis.is_reverse, 0, NUM_SERVOS);
   return janis;
 }
-
-// void setupRTC() {
-//   while (!Serial) ; // wait until Arduino Serial Monitor opens
-//   setSyncProvider(RTC.get);   // the function to get the time from the RTC
-//   if(timeStatus()!= timeSet) 
-//      Serial.println("Unable to sync with the RTC");
-//   else
-//      Serial.println("RTC has set the system time");  
-// }
 
 void attachServos() {
   for (int i = 0; i < NUM_SERVOS; i++) {
@@ -68,15 +59,8 @@ void updateSensorState( void (*f)(int) ) {
 }
 
 void updateTimeState() {
-  printTime();
-  //if(timeStatus() == timeSet) {
   hourPaddle();
   fiveMinutePaddle();
-  //}
-  // else {
-  //   Serial.println("The time has not been set.");
-
-  // }
 }
 
 void sweepDefault() {
@@ -115,7 +99,6 @@ void printState() {
 void setup()
 {
   Serial.begin(9600);
-  //setupRTC();
   initializeTime();
   memset(sensor_vals, 0, NUM_SENSORS);
   janis = initializeJanis();
@@ -138,7 +121,6 @@ void loop()
     sensing = true;
     if (num_sensed <10) num_sensed ++;
     if (num_sensed > 5) updateSensorState(sweepBackForthControl);
-    // printState();
   }
 
   else {
@@ -150,7 +132,6 @@ void loop()
     }
     else {
       sensing = false;
-      //sweepDefault();
       updateTimeState();
     }
   }
