@@ -29,6 +29,7 @@ int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
+<<<<<<< HEAD
 //Setup
 void setup() 
 {
@@ -39,6 +40,19 @@ void setup()
 } 
 
 // //Helper Functions
+=======
+//Helper Functions
+void move_forward(int servoIndex, int interval) {
+  //move servo forwards the given interval
+  for(int i = servoPos[servoIndex]; i < servoPos[servoIndex] + interval; i+=1) { // turn 90 degrees so that the paddle appears thick
+    servos[servoIndex].write(i);
+    servoPos[servoIndex] = i;
+    delay(1);
+  }
+  // Serial.print("Moved: "); Serial.println(servoIndex);
+  delay(1);
+}
+>>>>>>> interaction_test
 
 
 void check_and_print_sensors() {
@@ -69,12 +83,35 @@ void calibrate() {
   }
 }
 
+void attachServos() {
+  for (int i = 0; i < NUM_SERVOS; i++) { //loops through all sensors
+    servos[i].attach(servoPins[i]);  // attaches the servo on pin 9 to the servo object  
+  }
+}
+
+//-----------------------------------------------------------Main Arduino Functions-------------------------------------------------------------------------
+
+//Setup
+void setup() 
+{
+  attachServos();
+  Serial.begin(9600);
+  calibrate();
+
+} 
+
+
 void loop() 
 //main loop
 {
   // calibrate();
   // delay(20);
+<<<<<<< HEAD
   // test_all();
   check_and_print_sensors();
+=======
+  // sweep_all_sensors();
+  // check_and_print_sensors();
+>>>>>>> interaction_test
 }
 

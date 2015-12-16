@@ -9,7 +9,7 @@
 //#include <DS1307RTC.h>
 //-----------------------------------------------------------------------------Initializations---------------------------------------------------------------------------
 
-//Already Included: POS_MAX, NUM_SERVOS, NUM_SENSORS, servo_pins, sensor_pins
+//Already Included: POS_MAX, NUM_SERVOS, NUM_SENSORS
 int servo_pins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 int sensor_pins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
 
@@ -153,7 +153,6 @@ void loop()
       sweepDefault();
     }
   }
-
    displayState();
    delay(10);
 }

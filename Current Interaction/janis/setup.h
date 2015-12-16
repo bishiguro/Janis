@@ -7,6 +7,6 @@ const int MIN_SENSE = 5;
 //State Structure
 struct State{
   // Servo servo;
-  int pos[12];
-  bool is_reverse[12];
+  int pos[NUM_SERVOS];
+  bool is_reverse[NUM_SERVOS];
 };
