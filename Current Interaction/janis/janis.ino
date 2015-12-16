@@ -4,6 +4,9 @@
 //----------------------------------------------------------------------------Libraries and Packages----------------------------------------------------------------------
 #include <Servo.h>
 #include <setup.h>
+#include <Time.h>
+#include <TimeLib.h>
+//#include <DS1307RTC.h>
 //-----------------------------------------------------------------------------Initializations---------------------------------------------------------------------------
 
 //Already Included: POS_MAX, NUM_SERVOS, NUM_SENSORS
@@ -15,6 +18,7 @@ Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
 bool sensing;
+int num_sensed;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -23,6 +27,15 @@ State initializeJanis() {
   memset(janis.is_reverse, 0, NUM_SERVOS);
   return janis;
 }
+
+// void setupRTC() {
+//   while (!Serial) ; // wait until Arduino Serial Monitor opens
+//   setSyncProvider(RTC.get);   // the function to get the time from the RTC
+//   if(timeStatus()!= timeSet) 
+//      Serial.println("Unable to sync with the RTC");
+//   else
+//      Serial.println("RTC has set the system time");  
+// }
 
 void attachServos() {
   for (int i = 0; i < NUM_SERVOS; i++) {
@@ -40,7 +53,7 @@ bool ifDetect() {
 
 void getSensorInput() {
   //writes bool of if sensor sensed value or not, onto sensor_vals
-  int threshold = 150;
+  int threshold = 200;
   for (int i = 0; i < NUM_SENSORS; i++) {
     sensor_vals[i] = (analogRead(sensor_pins[i]) >= threshold);
   }
@@ -55,29 +68,67 @@ void updateSensorState( void (*f)(int) ) {
 }
 
 void updateTimeState() {
-  hourPaddle();
-  fiveMinutePaddle();
+  printTime();
+  if(timeStatus() == timeSet) {
+    hourPaddle();
+    fiveMinutePaddle();
+  }
+  else {
+    Serial.println("The time has not been set.");
+
+  }
+}
+
+void sweepDefault() {
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    sweepBackForthControl(i);
+  }
+}
+
+void initializeTimeState() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    janis.pos[i] = map(i, 0, NUM_SERVOS, 0, 90);
+  }
 }
 //------------------Display State------------------------------------------
 void displayState() {
   //write state to servos
-  for (int i = 0; i < NUM_SERVOS; i++)
+  for (int i = 0; i < NUM_SERVOS; i++) {
     servos[i].write(janis.pos[i]);
-}
-
-//-----------------------------------------------------------------Main Ardiono Loops---------------------------------------------------------------------------------------
-void setup()
-{
-  Serial.begin(9600);
-  memset(sensor_vals, 0, NUM_SENSORS);
-  janis = initializeJanis();
+  }
 }
 
 void calibrate() {
   for (int i = 0; i < NUM_SERVOS; i++) {
     janis.pos[i] = 0;
+    //servos[i].write(0);
   }
 }
+
+void printState() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    Serial.println(janis.pos[i]);
+  }
+  Serial.println("===============================");
+}
+//-----------------------------------------------------------------Main Ardiono Loops---------------------------------------------------------------------------------------
+void setup()
+{
+  Serial.begin(9600);
+  //setupRTC();
+  memset(sensor_vals, 0, NUM_SENSORS);
+  janis = initializeJanis();
+  attachServos();
+
+  calibrate();
+  displayState();
+
+  initializeTimeState();
+  displayState();
+
+  num_sensed = 0;
+}
+
 
 void loop()
 {
@@ -85,14 +136,23 @@ void loop()
 
   if (ifDetect()) {
     sensing = true;
-    updateSensorState(sweepBackForthControl);
+    if (num_sensed <10) num_sensed ++;
+    if (num_sensed > 5) updateSensorState(sweepBackForthControl);
+    // printState();
   }
-  else if (sensing) {
-    calibrate();
+
+  else {
+    num_sensed = 0;
+    if (sensing) {
+      calibrate();
+      initializeTimeState();
+      sensing = false;
+    }
+    else {
+      sensing = false;
+      sweepDefault();
+    }
   }
-  else
-    sensing = false;
-    updateTimeState();
-    
-  displayState();
+   displayState();
+   delay(10);
 }

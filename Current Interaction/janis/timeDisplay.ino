@@ -4,6 +4,12 @@ int prev_hour;
 int prev_minute;
 int prev_second;
 
+
+void initializeTime() {
+	for (int s = 0; s <=NUM_SERVOS; s++) {	
+	}
+}
+
 void printTime() { // update the clock
   Serial.print(hour());
   printDigits(minute());
