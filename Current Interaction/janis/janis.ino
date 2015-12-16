@@ -17,8 +17,11 @@ int sensor_pins[NUM_SENSORS] = {A5, A4, A3, A2, A1, A0};
 Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
+
 bool sensing;
 int num_sensed;
+int last_sensed = 0;
+int num_default;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -53,12 +56,20 @@ bool ifDetect() {
 
 void getSensorInput() {
   //writes bool of if sensor sensed value or not, onto sensor_vals
-  int threshold = 200;
+  int threshold = 150;
   for (int i = 0; i < NUM_SENSORS; i++) {
     sensor_vals[i] = (analogRead(sensor_pins[i]) >= threshold);
   }
 }
 //----------------Update State--------------------------------------------
+// void updateSensorState( void (*f)(int) ) {
+//   //if a sensor sees something, run the given control function
+//   for (int i = 0; i < NUM_SENSORS; i++) {
+//     if (sensor_vals[i])
+//       (*f)(i);
+//   }
+// }
+
 void updateSensorState( void (*f)(int) ) {
   //if a sensor sees something, run the given control function
   for (int i = 0; i < NUM_SENSORS; i++) {
@@ -134,25 +145,36 @@ void loop()
 {
   getSensorInput();
 
+  //If Sensed
   if (ifDetect()) {
-    sensing = true;
-    if (num_sensed <10) num_sensed ++;
-    if (num_sensed > 5) updateSensorState(sweepBackForthControl);
+    // Updating Num_Sensed and Num_Default
+    num_default = 0;
+    if (num_sensed <20) num_sensed ++;
+
+    //If we should do sensing interaction
+    if (num_sensed > THRESHOLD) {
+      if (!sensing) calibrate();
+      else updateSensorState(sweepBackForthControl);
+      sensing = true;
+    }
+    delay(3);
     // printState();
   }
 
+  //If not sensed
   else {
+    // Updating Num_Sensed and Num_Default
     num_sensed = 0;
-    if (sensing) {
-      calibrate();
-      initializeTimeState();
+    if (num_default <20) num_default ++;
+
+    //If we should do the default interaction
+    if (num_default > THRESHOLD) {
+      if (sensing) initializeTimeState();
+      else sweepDefault();
       sensing = false;
-    }
-    else {
-      sensing = false;
-      sweepDefault();
+      delay(10);
     }
   }
-   displayState();
-   delay(10);
+  displayState();
+  delay(2);
 }
