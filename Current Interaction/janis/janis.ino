@@ -77,6 +77,18 @@ void updateTimeState() {
 
   }
 }
+
+void sweepDefault() {
+  for (int i = 0; i < NUM_SENSORS; i++) {
+    sweepBackForthControl(i);
+  }
+}
+
+void initializeTimeState() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    janis.pos[i] = map(i, 0, NUM_SERVOS, 0, 90);
+  }
+}
 //------------------Display State------------------------------------------
 void displayState() {
   //write state to servos
@@ -85,23 +97,10 @@ void displayState() {
   }
 }
 
-//-----------------------------------------------------------------Main Ardiono Loops---------------------------------------------------------------------------------------
-void setup()
-{
-  Serial.begin(9600);
-  //setupRTC();
-
-  memset(sensor_vals, 0, NUM_SENSORS);
-  janis = initializeJanis();
-  attachServos();
-  calibrate();
-  //displayState();
-}
-
 void calibrate() {
   for (int i = 0; i < NUM_SERVOS; i++) {
-    // janis[i].pos = 0;
-    servos[i].write(0);
+    janis.pos[i] = 0;
+    //servos[i].write(0);
   }
 }
 
@@ -111,26 +110,44 @@ void printState() {
   }
   Serial.println("===============================");
 }
+//-----------------------------------------------------------------Main Ardiono Loops---------------------------------------------------------------------------------------
+void setup()
+{
+  Serial.begin(9600);
+  //setupRTC();
+  memset(sensor_vals, 0, NUM_SENSORS);
+  janis = initializeJanis();
+  attachServos();
+
+  calibrate();
+  displayState();
+
+  initializeTimeState();
+  displayState();
+}
+
+
 void loop()
 {
   getSensorInput();
-  
-  for (int i = 0; i<NUM_SENSORS; i++) {
-    Serial.print(sensor_vals[i]); Serial.print("| ");
-  }
-  Serial.println("");
-  
 
   if (ifDetect()) {
     sensing = true;
     updateSensorState(sweepBackForthControl);
     // printState();
   }
-  else if (sensing) {
-    calibrate();
+  
+  else {
+    if (sensing) {
+      calibrate();
+      initializeTimeState();
+    }
+    else {
+      sensing = false;
+      sweepDefault();
+    }
   }
-  else
-    sensing = false;
-    updateTimeState();
+
    displayState();
+   delay(10);
 }
