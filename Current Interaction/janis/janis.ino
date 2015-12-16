@@ -17,8 +17,12 @@ int sensor_pins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5};
 Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
-bool sensing;
-int num_sensed;
+
+bool is_initializing;
+bool sensing = false;
+int num_sensed = 0;
+int last_sensed = 0;
+int num_default = 0;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -74,6 +78,29 @@ void initializeTimeState() {
     janis.pos[i] = map(i, 0, NUM_SERVOS, 0, 90);
   }
 }
+
+void initializeTimeStateInSteps() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    int finalpos = map(i, 0, NUM_SERVOS, 0, 90);
+
+    //update positions in increments
+    if (finalpos < janis.pos[i]) {
+      int difference = janis.pos[i] - finalpos;
+      janis.pos[i] = janis.pos[i] - difference/20;    
+    }
+    else {
+      int difference = finalpos - janis.pos[i];
+      janis.pos[i] = janis.pos[i] + difference/20; 
+    }
+
+    //if done initializing
+    if (janis.pos[i] == finalpos) {
+      is_initializing = false;
+    }
+
+  }
+}
+
 //------------------Display State------------------------------------------
 void displayState() {
   //write state to servos
@@ -109,32 +136,61 @@ void setup()
 
   initializeTimeState();
   displayState();
-
-  num_sensed = 0;
 }
 
 void loop()
 {
   getSensorInput();
 
+  //Update Num_sensed and num_default
   if (ifDetect()) {
-    sensing = true;
-    if (num_sensed <10) num_sensed ++;
-    if (num_sensed > 5) updateSensorState(sweepBackForthControl);
+    if (num_sensed < 20) num_sensed ++;
+    num_default = 0;
+  }
+  else {
+    if (num_default < 20) num_default ++;
+    num_sensed = 0;
   }
 
-  else {
-    num_sensed = 0;
-    if (sensing) {
-      calibrate();
-      initializeTimeState();
-      sensing = false;
-    }
-    else {
-      sensing = false;
-      updateTimeState();
-    }
+  //Change states if necessary
+  if ((sensing) && (num_default > THRESHOLD)) {
+    sensing = false;
+    is_initializing = true;
   }
-   displayState();
-   delay(10);
+    
+  else if ((!sensing) && (num_sensed > THRESHOLD)) {
+    sensing = true;
+    is_initializing = true;
+  }
+
+  //If update Sensing Interaction
+  if (sensing) {
+    if (is_initializing) {
+      calibrate();
+// <<<<<<< HEAD
+//       initializeTimeState();
+//       sensing = false;
+//     }
+//     else {
+//       sensing = false;
+//       updateTimeState();
+// =======
+      is_initializing = false;
+// >>>>>>> origin/interaction_test
+    }
+    else updateSensorState(sweepBackForthControl);
+    delay(5);
+  }
+
+  //If update Default Interaction
+  if (!sensing) {
+    if (is_initializing) initializeTimeStateInSteps();
+    else sweepDefault();
+    sweepDefault();
+    delay(15);
+  }
+
+  //Display state
+  displayState();
+  delay(2);
 }
