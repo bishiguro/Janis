@@ -18,6 +18,7 @@ Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
 bool sensing;
+int num_sensed;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -124,6 +125,8 @@ void setup()
 
   initializeTimeState();
   displayState();
+
+  num_sensed = 0;
 }
 
 
@@ -133,11 +136,13 @@ void loop()
 
   if (ifDetect()) {
     sensing = true;
-    updateSensorState(sweepBackForthControl);
+    if (num_sensed <10) num_sensed ++;
+    if (num_sensed > 5) updateSensorState(sweepBackForthControl);
     // printState();
   }
 
   else {
+    num_sensed = 0;
     if (sensing) {
       calibrate();
       initializeTimeState();
