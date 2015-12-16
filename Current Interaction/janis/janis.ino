@@ -18,10 +18,10 @@ Servo servos[NUM_SERVOS];
 State janis;
 bool sensor_vals[NUM_SENSORS];
 
-bool sensing;
-int num_sensed;
+bool is_initializing;
+int num_sensed = 0;
 int last_sensed = 0;
-int num_default;
+int num_default = 0;
 
 //------------------------Setup----------------------------------------
 State initializeJanis() {
@@ -56,7 +56,7 @@ bool ifDetect() {
 
 void getSensorInput() {
   //writes bool of if sensor sensed value or not, onto sensor_vals
-  int threshold = 150;
+  int threshold = 200;
   for (int i = 0; i < NUM_SENSORS; i++) {
     sensor_vals[i] = (analogRead(sensor_pins[i]) >= threshold);
   }
@@ -101,6 +101,17 @@ void initializeTimeState() {
     janis.pos[i] = map(i, 0, NUM_SERVOS, 0, 90);
   }
 }
+
+void initializeTimeStateInSteps() {
+  for (int i = 0; i < NUM_SERVOS; i++) {
+    int finalpos = map(i, 0, NUM_SERVOS, 0, 90);
+    janis.pos[i] = (janis.pos[i] - finalpos)/20;
+    if (janis.pos[i] == finalpos) {
+      is_initializing = false;
+    }
+  }
+}
+
 //------------------Display State------------------------------------------
 void displayState() {
   //write state to servos
@@ -136,8 +147,6 @@ void setup()
 
   initializeTimeState();
   displayState();
-
-  num_sensed = 0;
 }
 
 
@@ -149,15 +158,15 @@ void loop()
   if (ifDetect()) {
     // Updating Num_Sensed and Num_Default
     num_default = 0;
-    if (num_sensed <20) num_sensed ++;
+    if (num_sensed <50) num_sensed ++;
 
     //If we should do sensing interaction
     if (num_sensed > THRESHOLD) {
-      if (!sensing) calibrate();
+      if (is_initializing) calibrate();
       else updateSensorState(sweepBackForthControl);
-      sensing = true;
+      delay(3);
     }
-    delay(3);
+
     // printState();
   }
 
@@ -165,13 +174,12 @@ void loop()
   else {
     // Updating Num_Sensed and Num_Default
     num_sensed = 0;
-    if (num_default <20) num_default ++;
+    if (num_default <50) num_default ++;
 
     //If we should do the default interaction
     if (num_default > THRESHOLD) {
-      if (sensing) initializeTimeState();
+      if (is_initializing) initializeTimeStateInSteps();
       else sweepDefault();
-      sensing = false;
       delay(10);
     }
   }
