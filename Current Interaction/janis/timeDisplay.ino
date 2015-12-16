@@ -6,8 +6,9 @@ int prev_second;
 
 
 void initializeTime() {
-	for (int s = 0; s <=NUM_SERVOS; s++) {	
-	}
+	setTime(12,0,0,12,17,2015);
+	// for (int s = 0; s <=NUM_SERVOS; s++) {	
+	// }
 }
 
 void printTime() { // update the clock

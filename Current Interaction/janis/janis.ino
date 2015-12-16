@@ -69,14 +69,14 @@ void updateSensorState( void (*f)(int) ) {
 
 void updateTimeState() {
   printTime();
-  if(timeStatus() == timeSet) {
-    hourPaddle();
-    fiveMinutePaddle();
-  }
-  else {
-    Serial.println("The time has not been set.");
+  //if(timeStatus() == timeSet) {
+  hourPaddle();
+  fiveMinutePaddle();
+  //}
+  // else {
+  //   Serial.println("The time has not been set.");
 
-  }
+  // }
 }
 
 void sweepDefault() {
@@ -116,6 +116,7 @@ void setup()
 {
   Serial.begin(9600);
   //setupRTC();
+  initializeTime();
   memset(sensor_vals, 0, NUM_SENSORS);
   janis = initializeJanis();
   attachServos();
@@ -128,7 +129,6 @@ void setup()
 
   num_sensed = 0;
 }
-
 
 void loop()
 {
@@ -150,7 +150,8 @@ void loop()
     }
     else {
       sensing = false;
-      sweepDefault();
+      //sweepDefault();
+      updateTimeState();
     }
   }
    displayState();
