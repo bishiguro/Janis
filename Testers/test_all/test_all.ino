@@ -6,12 +6,12 @@
 //---------------------------------------------------------------Initializations---------------------------------------------------------------
 #include <Servo.h>
 
-const int NUM_SERVOS = 11;  //took out 11 because the servo is spent :(
+const int NUM_SERVOS = 12;  //took out 11 because the servo is spent :(
 
 Servo servos[NUM_SERVOS];
-int servo_pins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13};
+int servo_pins[NUM_SERVOS] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
-int servoPos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int servoPos[NUM_SERVOS] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
 void setup()
