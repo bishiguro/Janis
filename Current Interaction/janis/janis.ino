@@ -19,6 +19,7 @@ State janis;
 bool sensor_vals[NUM_SENSORS];
 
 bool is_initializing;
+bool sensing = false;
 int num_sensed = 0;
 int last_sensed = 0;
 int num_default = 0;
@@ -30,15 +31,6 @@ State initializeJanis() {
   memset(janis.is_reverse, 0, NUM_SERVOS);
   return janis;
 }
-
-// void setupRTC() {
-//   while (!Serial) ; // wait until Arduino Serial Monitor opens
-//   setSyncProvider(RTC.get);   // the function to get the time from the RTC
-//   if(timeStatus()!= timeSet) 
-//      Serial.println("Unable to sync with the RTC");
-//   else
-//      Serial.println("RTC has set the system time");  
-// }
 
 void attachServos() {
   for (int i = 0; i < NUM_SERVOS; i++) {
@@ -62,13 +54,6 @@ void getSensorInput() {
   }
 }
 //----------------Update State--------------------------------------------
-// void updateSensorState( void (*f)(int) ) {
-//   //if a sensor sees something, run the given control function
-//   for (int i = 0; i < NUM_SENSORS; i++) {
-//     if (sensor_vals[i])
-//       (*f)(i);
-//   }
-// }
 
 void updateSensorState( void (*f)(int) ) {
   //if a sensor sees something, run the given control function
@@ -105,10 +90,22 @@ void initializeTimeState() {
 void initializeTimeStateInSteps() {
   for (int i = 0; i < NUM_SERVOS; i++) {
     int finalpos = map(i, 0, NUM_SERVOS, 0, 90);
-    janis.pos[i] = (janis.pos[i] - finalpos)/20;
+
+    //update positions in increments
+    if (finalpos < janis.pos[i]) {
+      int difference = janis.pos[i] - finalpos;
+      janis.pos[i] = janis.pos[i] - difference/20;    
+    }
+    else {
+      int difference = finalpos - janis.pos[i];
+      janis.pos[i] = janis.pos[i] + difference/20; 
+    }
+
+    //if done initializing
     if (janis.pos[i] == finalpos) {
       is_initializing = false;
     }
+
   }
 }
 
@@ -154,35 +151,46 @@ void loop()
 {
   getSensorInput();
 
-  //If Sensed
+  //Update Num_sensed and num_default
   if (ifDetect()) {
-    // Updating Num_Sensed and Num_Default
+    if (num_sensed < 20) num_sensed ++;
     num_default = 0;
-    if (num_sensed <50) num_sensed ++;
-
-    //If we should do sensing interaction
-    if (num_sensed > THRESHOLD) {
-      if (is_initializing) calibrate();
-      else updateSensorState(sweepBackForthControl);
-      delay(3);
-    }
-
-    // printState();
   }
-
-  //If not sensed
   else {
-    // Updating Num_Sensed and Num_Default
+    if (num_default < 20) num_default ++;
     num_sensed = 0;
-    if (num_default <50) num_default ++;
-
-    //If we should do the default interaction
-    if (num_default > THRESHOLD) {
-      if (is_initializing) initializeTimeStateInSteps();
-      else sweepDefault();
-      delay(10);
-    }
   }
+
+  //Change states if necessary
+  if ((sensing) && (num_default > THRESHOLD)) {
+    sensing = false;
+    is_initializing = true;
+  }
+    
+  else if ((!sensing) && (num_sensed > THRESHOLD)) {
+    sensing = true;
+    is_initializing = true;
+  }
+
+  //If update Sensing Interaction
+  if (sensing) {
+    if (is_initializing) {
+      calibrate();
+      is_initializing = false;
+    }
+    else updateSensorState(sweepBackForthControl);
+    delay(5);
+  }
+
+  //If update Default Interaction
+  if (!sensing) {
+    if (is_initializing) initializeTimeStateInSteps();
+    else sweepDefault();
+    sweepDefault();
+    delay(15);
+  }
+
+  //Display state
   displayState();
   delay(2);
 }
