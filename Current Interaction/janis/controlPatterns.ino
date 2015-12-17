@@ -22,51 +22,10 @@ void inverseSweepBackForthControl(int sensor_num) {
   }
 }
 
-void singleIncrementServo(int servo_num, int pos_max) {
-	if (ifChangeState(servo_num, pos_max)) {
-    changeDir(servo_num);
-  }
-	else {
-    increment(servo_num);
-  }
-}
 
-// void sweepToNinety(int sensor_num) {
-//   int servo_num1 = sensor_num * 2;
-//   int servo_num2 = servo_num1 + 1;
-//   for (int s = 0; s<NUM_SERVOS; s++) {
-//     if ((s == servo_num1) || (s == servo_num2))
-//       janis.pos[s] = constrain(janis.pos[s] + 1, 0, 90);
-//   }
-// }
-
-void resetNinety() {
-  for (int s = 0; s <NUM_SERVOS; s++) {
-    if (not_sensed[s] > TIME_THRESHOLD) janis.pos[s] = 0;
-  }
-}
-
-void sweepToNinety(int sensor_num) {
-  int servo_num1 = sensor_num * 2;
-  int servo_num2 = servo_num1 + 1;
-  janis.pos[servo_num1] = constrain(janis.pos[servo_num1] + 1, 0, 90);
-  janis.pos[servo_num2] = constrain(janis.pos[servo_num2] + 1, 0, 90);
-}
-
-void sweepToNinetyWithReset(int sensor_num) {
-  int servo_num1 = sensor_num * 2;
-  int servo_num2 = (sensor_num * 2) + 1;
-  janis.pos[servo_num1] = constrain(janis.pos[servo_num1] + 1, 0, 90);
-  janis.pos[servo_num2] = constrain(janis.pos[servo_num2] + 1, 0, 90);
-
-  if (last_sensed != sensor_num) {
-    int last1 = last_sensed * 2;
-    int last2 = (last_sensed*2) + 1;
-    janis.pos[last1] = 0;
-    janis.pos[last2] = 0;
-  }
-  
-  last_sensed = sensor_num;
+void sweepToNinetyControl(int sensor_num) {
+  sweepToNinety(sensor_num);
+  resetNinety(10); //amount of cycles required of not sensed before it resets
 }
 
 //------Servo Control Helper Functions------------------
@@ -89,4 +48,29 @@ void increment(int servo_num) {
     janis.pos[servo_num] -= 1;
   else
     janis.pos[servo_num] += 1;
+}
+
+void singleIncrementServo(int servo_num, int pos_max) {
+  if (ifChangeState(servo_num, pos_max)) {
+    changeDir(servo_num);
+  }
+  else {
+    increment(servo_num);
+  }
+}
+
+void sweepToNinety(int sensor_num) {
+  int servo_num1 = sensor_num * 2;
+  int servo_num2 = (sensor_num * 2) + 1;
+  janis.pos[servo_num1] = constrain(janis.pos[servo_num1] + 1, 0, 90);
+  janis.pos[servo_num2] = constrain(janis.pos[servo_num2] + 1, 0, 90);
+}
+
+void resetNinety(int time_to_reset) {
+  for (int s = 0; s <NUM_SENSORS; s++) {
+    if (not_sensed[s] > time_to_reset) {
+      janis.pos[s*2] = 0;
+      janis.pos[(s*2) + 1] = 0;
+    }
+  }
 }

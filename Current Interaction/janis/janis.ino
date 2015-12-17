@@ -176,8 +176,7 @@ void loop()
       is_initializing = false;
     }
     else {
-      updateSensorState(sweepToNinety);
-      resetNinety();
+      updateSensorState(sweepToNinetyControl);
     }
     delay(1);
   }
