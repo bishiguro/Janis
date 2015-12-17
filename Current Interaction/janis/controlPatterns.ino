@@ -42,26 +42,26 @@ void singleIncrementServo(int servo_num, int pos_max) {
 //   }
 // }
 
-void sweepToNinetySimple(int sensor_num) {
+void sweepToNinety(int sensor_num) {
   int servo_num1 = sensor_num * 2;
   int servo_num2 = servo_num1 + 1;
-  janis.pos[servo_num1] = constrain(janis.pos[servo_num1], 0, 90);
-  janis.pos[servo_num2] = constrain(janis.pos[servo_num2], 0, 90);
+  janis.pos[servo_num1] = constrain(janis.pos[servo_num1] + 1, 0, 90);
+  janis.pos[servo_num2] = constrain(janis.pos[servo_num2] + 1, 0, 90);
 }
 
 void sweepToNinetyWithReset(int sensor_num) {
   int servo_num1 = sensor_num * 2;
-  int servo_num2 = servo_num1 + 1;
-  janis.pos[servo_num1] = constrain(janis.pos[servo_num1], 0, 90);
-  janis.pos[servo_num2] = constrain(janis.pos[servo_num2], 0, 90);
+  int servo_num2 = (sensor_num * 2) + 1;
+  janis.pos[servo_num1] = constrain(janis.pos[servo_num1] + 1, 0, 90);
+  janis.pos[servo_num2] = constrain(janis.pos[servo_num2] + 1, 0, 90);
 
   if (last_sensed != sensor_num) {
-    int servo_num1 = last_sensed * 2;
-    int servo_num2 = (last_sensed*2) + 1;
-    janis.pos[servo_num1] = 0;
-    janis.pos[servo_num2] = 0;
+    int last1 = last_sensed * 2;
+    int last2 = (last_sensed*2) + 1;
+    janis.pos[last1] = 0;
+    janis.pos[last2] = 0;
   }
-
+  
   last_sensed = sensor_num;
 }
 
