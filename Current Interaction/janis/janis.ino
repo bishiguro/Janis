@@ -180,6 +180,7 @@ void loop()
       is_initializing = false;
     }
     sweepDefault();
+    updateTimeState();
     delay(15);
   }
 
