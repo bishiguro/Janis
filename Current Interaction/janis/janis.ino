@@ -144,21 +144,21 @@ void loop()
 
   //Update Num_sensed and num_default
   if (ifDetect()) {
-    if (num_sensed < 20) num_sensed ++;
+    if (num_sensed < 100) num_sensed ++;
     num_default = 0;
   }
   else {
-    if (num_default < 20) num_default ++;
+    if (num_default < 100) num_default ++;
     num_sensed = 0;
   }
 
   //Change states if necessary
-  if ((sensing) && (num_default > THRESHOLD)) {
+  if ((sensing) && (num_default > TIME_THRESHOLD)) {
     sensing = false;
     is_initializing = true;
   }
     
-  else if ((!sensing) && (num_sensed > THRESHOLD)) {
+  else if ((!sensing) && (num_sensed > SENSE_THRESHOLD)) {
     sensing = true;
     is_initializing = true;
   }
@@ -169,18 +169,21 @@ void loop()
       calibrate();
       is_initializing = false;
     }
-    else updateSensorState(sweepBackForthControl);
-    delay(5);
+    else updateSensorState(sweepToNinetyWithReset);
+    delay(1);
   }
 
   //If update Default Interaction
   if (!sensing) {
-    if (is_initializing) initializeTimeStateInSteps();
-    else updateTimeState();
+    if (is_initializing) {
+      initializeTimeState();
+      is_initializing = false;
+    }
+    sweepDefault();
     delay(15);
   }
 
   //Display state
   displayState();
-  delay(2);
+  delay(1);
 }
