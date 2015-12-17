@@ -16,7 +16,8 @@ int sensor_pins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5};
 //State Variables
 Servo servos[NUM_SERVOS];
 State janis;
-bool sensor_vals[NUM_SENSORS];
+bool sensor_bools[NUM_SENSORS];
+int not_sensed[NUM_SENSORS];
 
 bool is_initializing;
 bool sensing = false;
@@ -40,24 +41,28 @@ void attachServos() {
 }
 //--------------Get Sensor Input--------------------------------------
 bool ifDetect() {
-  //returns true if sensor_vals contains at least one true
+  //returns true if sensor_bools contains at least one true
   for (int i = 0; i <NUM_SENSORS; i++)
-    if (sensor_vals[i]) return true;
+    if (sensor_bools[i]) return true;
   return false;
 }
 
 void getSensorInput() {
-  //writes bool of if sensor sensed value or not, onto sensor_vals
+  //writes bool of if sensor sensed value or not, onto sensor_bools
   int threshold = 200;
   for (int i = 0; i < NUM_SENSORS; i++) {
-    sensor_vals[i] = (analogRead(sensor_pins[i]) >= threshold);
+    sensor_bools[i] = (analogRead(sensor_pins[i]) >= threshold);
+    
+    //update not_sensed
+    if (sensor_bools[i]) not_sensed[i] = 0;
+    else if (not_sensed[i] < 100) not_sensed[i] ++;
   }
 }
 //----------------Update State--------------------------------------------
 void updateSensorState( void (*f)(int) ) {
   //if a sensor sees something, run the given control function
   for (int i = 0; i < NUM_SENSORS; i++) {
-    if (sensor_vals[i])
+    if (sensor_bools[i])
       (*f)(i);
   }
 }
@@ -127,7 +132,8 @@ void setup()
 {
   Serial.begin(9600);
   initializeTime();
-  memset(sensor_vals, 0, NUM_SENSORS);
+  memset(sensor_bools, 0, NUM_SENSORS);
+  memset(not_sensed, 0, NUM_SENSORS);
   janis = initializeJanis();
   attachServos();
 
@@ -169,7 +175,10 @@ void loop()
       calibrate();
       is_initializing = false;
     }
-    else updateSensorState(sweepToNinetyWithReset);
+    else {
+      updateSensorState(sweepToNinety);
+      resetNinety();
+    }
     delay(1);
   }
 

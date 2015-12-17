@@ -37,10 +37,14 @@ void singleIncrementServo(int servo_num, int pos_max) {
 //   for (int s = 0; s<NUM_SERVOS; s++) {
 //     if ((s == servo_num1) || (s == servo_num2))
 //       janis.pos[s] = constrain(janis.pos[s] + 1, 0, 90);
-//     else
-//       janis.pos[s] = 0;
 //   }
 // }
+
+void resetNinety() {
+  for (int s = 0; s <NUM_SERVOS; s++) {
+    if (not_sensed[s] > TIME_THRESHOLD) janis.pos[s] = 0;
+  }
+}
 
 void sweepToNinety(int sensor_num) {
   int servo_num1 = sensor_num * 2;
