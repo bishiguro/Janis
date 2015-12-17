@@ -1630,8 +1630,8 @@
 	}
 
 		a:hover {
-			color: #ef8376;
-			border-bottom-color: transparent;
+	color: #ef8376;
+	border-bottom-color: transparent;
 		}
 
 	sub {
@@ -1742,8 +1742,8 @@
 	}
 
 		.image img {
-			display: block;
-			width: 100%;
+	display: block;
+	width: 100%;
 		}
 
 		.image.fit {
