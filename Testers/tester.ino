@@ -29,6 +29,7 @@ int sensorPins[NUM_SENSORS] = {A0, A1, A2, A3, A4, A5}; // sensor 1
 int sensorValues[NUM_SENSORS] = {0, 0, 0, 0, 0, 0};
 
 //---------------------------------------------------------------Functions---------------------------------------------------------------
+
 //Helper Functions
 void move_forward(int servoIndex, int interval) {
   //move servo forwards the given interval
@@ -41,15 +42,6 @@ void move_forward(int servoIndex, int interval) {
   delay(1);
 }
 
-void move_backward(int servoIndex, int interval) {
-  //move servo backwards the given interval
-  for(int i = servoPos[servoIndex]; i > servoPos[servoIndex] - interval; i-=1) { // turn 90 degrees back so that the paddle appears thin
-    servos[servoIndex].write(i);
-    servoPos[servoIndex] = i;
-    delay(1);
-  }
-  delay(1); 
-}
 
 void check_and_print_sensors() {
   //loop through all sensors
@@ -63,13 +55,13 @@ void check_and_print_sensors() {
   delay(200);
 }
 
-void sweep_all_sensors() {
-  // sweep all servos back and forth from 0 to 90
-  for (int i = 0; i < NUM_SERVOS; i++) {
-    move_forward(i, 90);
-    delay(10);
-    move_backward(i, 90);
-    delay(10);
+
+void test_all() {
+  for (int s = 0; s < NUM_SERVOS; s += 1) {
+    for (int i = 0; i < 90; i += 1) {
+      servos[s].write(i);
+      delay(10);
+    }
   }
 }
 
@@ -103,7 +95,7 @@ void loop()
 {
   // calibrate();
   // delay(20);
-  // sweep_all_sensors();
-  // check_and_print_sensors();
+  // test_all();
+  check_and_print_sensors();
 }
 
