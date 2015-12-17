@@ -4,8 +4,9 @@ int prev_hour;
 int prev_minute;
 int prev_second;
 
+
 void initializeTime() {
-	setTime(1,30,0,12,17,2015); // start time
+	setTime(1,30,0,12,17,2015);
 }
 
 void printTime() { // update the clock
@@ -34,13 +35,13 @@ void hourPaddle() {
 void fiveMinutePaddle() {
 	int curr_minute = minute();
 	if (curr_minute != prev_minute) {
-		janis.pos[prev_minute/5] = 0;
+		janis.pos[prev_minute/5] = 45;
 	}
 
 	if((hourFormat12()-1) != (curr_minute/5)) { // prioritize the hour over the minute
 		singleIncrementServo(curr_minute/5, 90);
 	}
-	for (int i = curr_minute/5 - 1; i > -1; i--) { // rotate all preceding minute paddles
+	for (int i = curr_minute/5 - 1; i >= 0; i--) { // rotate all preceding minute paddles
 		singleIncrementServo(i, 90);
 	}
 }

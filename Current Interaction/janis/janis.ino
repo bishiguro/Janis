@@ -175,8 +175,11 @@ void loop()
 
   //If update Default Interaction
   if (!sensing) {
-    if (is_initializing) initializeTimeStateInSteps();
-    else updateTimeState();
+    if (is_initializing) {
+      calibrate();
+      is_initializing = false;
+    }
+    updateTimeState();
     delay(15);
   }
 
