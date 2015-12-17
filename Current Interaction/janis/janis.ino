@@ -68,8 +68,8 @@ void updateSensorState( void (*f)(int) ) {
 }
 
 void updateTimeState() {
-  hourPaddle();
   fiveMinutePaddle();
+  hourPaddle();
 }
 
 void sweepDefault() {
@@ -184,10 +184,10 @@ void loop()
   //If update Default Interaction
   if (!sensing) {
     if (is_initializing) {
-      initializeTimeState();
+      calibrate();
       is_initializing = false;
     }
-    sweepDefault();
+    // sweepDefault();
     updateTimeState();
     delay(15);
   }
