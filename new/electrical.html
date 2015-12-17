@@ -53,46 +53,28 @@
 					<div class="container">
 						<article id="main" class="special">
 							<header>
-								<h2>Electrical</h2>
+								<h2>The Electrical Subteam</h2>
 								<p>
-									Electrical subteam, go!
+									We made circuits
 								</p>
 							</header>
+							
 							<a href="#" class="image featured"><img src="images/wiring_half.jpg" alt="" /></a>
+
 							<p>
-								Commodo id natoque malesuada sollicitudin elit suscipit. Curae suspendisse mauris posuere accumsan massa
-								posuere lacus convallis tellus interdum. Amet nullam fringilla nibh nulla convallis ut venenatis purus
-								lobortis. Auctor etiam porttitor phasellus tempus cubilia ultrices tempor sagittis. Nisl fermentum
-								consequat integer interdum integer purus sapien. Nibh eleifend nulla nascetur pharetra commodo mi augue
-								interdum tellus. Ornare cursus augue feugiat sodales velit lorem. Semper elementum ullamcorper lacinia
-								natoque aenean scelerisque vel lacinia mollis quam sodales congue.
+								In this project project, we are using one Arduino Mega, one trinket (mini Arduino), twelve HXT900 servos, six GP2Y0A02YK0F infrared distance sensors and one LED strip. The schematic of the circuit is shown below：
 							</p>
+							<a href="#" class="image featured"><img src="images/Circuit.jpg" alt="Circuit Diagram" width="200" height="800"   /></a>
 							<section>
-								<header>
-									<h3>Ultrices tempor sagittis nisl</h3>
-								</header>
+								To make sure the power source provides sufficient current to the components in the circuit, we chose a 5V/ 8A DC Power to power the whole system. As the total current expected to be drawn from the circuit is:
+								<a href="#" class="image featured"><img src="images/equation.jpg" alt="Circuit Equation" /></a>
+
 								<p>
-									Nascetur volutpat nibh ullamcorper vivamus at purus. Cursus ultrices porttitor sollicitudin imperdiet
-									at pretium tellus in euismod a integer sodales neque. Nibh quis dui quis mattis eget imperdiet venenatis
-									feugiat. Neque primis ligula cum erat aenean tristique luctus risus ipsum praesent iaculis. Fermentum elit
-									fringilla consequat dis arcu. Pellentesque mus tempor vitae pretium sodales porttitor lacus. Phasellus
-									egestas odio nisl duis sociis purus faucibus morbi. Eget massa mus etiam sociis pharetra magna.
+									As the power source’s capacity is 8A, the circuit won’t run short on current. But since all the wires available in the POE lab are 22 gage with a current capacity around 1.5 A, we decided to set up two circuits sharing the same power source. The first circuit will be consisted of the Arduino, servos and IR sensors while the second circuit will contain the Arduino trinket and LED strip. In this way, we are able to use wires of different gages in the two circuits to make sure the currents in both circuit are within safe range. 
 								</p>
 								<p>
-									Eleifend auctor turpis magnis sed porta nisl pretium. Aenean suspendisse nulla eget sed etiam parturient
-									orci cursus nibh. Quisque eu nec neque felis laoreet diam morbi egestas. Dignissim cras rutrum consectetur
-									ut penatibus fermentum nibh erat malesuada varius.
-								</p>
-							</section>
-							<section>
-								<header>
-									<h3>Augue euismod feugiat tempus</h3>
-								</header>
-								<p>
-									Pretium tellus in euismod a integer sodales neque. Nibh quis dui quis mattis eget imperdiet venenatis
-									feugiat. Neque primis ligula cum erat aenean tristique luctus risus ipsum praesent iaculis. Fermentum elit
-									ut nunc urna volutpat donec cubilia commodo risus morbi. Lobortis vestibulum velit malesuada ante
-									egestas odio nisl duis sociis purus faucibus morbi. Eget massa mus etiam sociis pharetra magna.
+									The other major decision we made for the electrical design is setting up the wire management system. During the early stage of the project, the wiring of the system is both messy and unstable (pin comes off very often). So we decided to solder the whole system onto protoboard, sort out the wires and label each of them. A comparison of the system before and after the wire sorting is shown below. 
+
 								</p>
 							</section>
 
