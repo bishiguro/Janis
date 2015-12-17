@@ -59,24 +59,23 @@
 								The source code that runs Janis can be found in our <a href="https://github.com/bishiguro/TwistedWaveInstallation">Github repository</a> within the Current Interaction/janis folder.  The firmware is run on an Arduino Uno and is written in the Arduino programming language.
 							</p>
 							<p>
-								The state of the system is represented with a list that represents the position of each servo and a list that represents the direction in which each servo is sweeping.  We store these lists in a structure that represents Janis’ current state.  We also have a list that keeps track of whether each sensor is currently detecting someone or not.  This information determines the way Janis will behave.
+								Janis has two modes.  By default, it tells time with its 12 paddles.  When any of its sensors detects  someone, however, it pauses and instead moves its paddles in response to that person.  The orientations of the paddles are controlled by servos.  The state of the system is represented with a C++ structure that holds a list of the current servo positions and a list of directions in which each servo is sweeping.  A list of boolean values keeps track of whether each sensor is currently detecting someone or not.
 							</p>
 							<p>
-								When Janis starts, we calibrate all of the servos to the zero position.  At the beginning of every loop, we check the input values of each sensor to see if any reads a value that exceeds our threshold of 200.  The system has two modes.  By default, Janis tells time.  When any of the sensors detect someone, however, it stops and moves its paddles in response to that person.
+								When Janis starts, it attaches the 12 servos to PWM Arduino pins, sets their positions to zero, and sets an initial time from which to start the clock using the <a href="http://playground.arduino.cc/code/time">Arduino Time library</a>.  At the beginning of every loop, Janis reads the input values of each sensor to see if any of them reads a value that exceeds our threshold of 200.
 							</p>
-
 								<header>
 									<h3>Interaction Mode</h3>
 								</header>
 							<p>
-								If any of the sensors read such a value, all of the paddles stop moving, and the two paddles closest to those sensor(s) will rotate back and forth ninety degrees until the person has moved away from them.  To rotate the paddles, we keep track of the current position of each servo in the above-mentioned list and, depending on the direction it is sweeping, we either increment or decrement its position by 1 each loop iteration that it detects someone.  If the servo reaches the 0 degree or the 90 degree mark, it switches its direction of motion.  To write new positions to the servos, we use the <a href="https://www.arduino.cc/en/Reference/Servo">Arduino Servo library</a>.
+								If any of the sensors read such a value, the paddles stop telling time and sweep to the 0 degree position.  The two paddles that correspond to each detecting sensor sweep to the 90 degree position for a minimum of 80 cycles and until the person has moved away.  To rotate the paddles, we increment or decrement its position by 1, depending on the direction it is sweeping, each iteration of the loop that it detects someone.  If the servo reaches the 0 degree or the 90 degree mark, it switches its direction of motion.  To write new positions to the servos, we use the <a href="https://www.arduino.cc/en/Reference/Servo">Arduino Servo library</a>.
 							</p>
 
 								<header>
 									<h3>Time Telling Mode</h3>
 								</header>
 						     <p>
-						     	If none of the sensors detect someone, we direct the servos to display the current time instead.  Janis has twelve paddles, so we can represent both each hour and each five minute mark with them.  One o’clock and the first five minutes of the hour are both represented by the left-most paddle.  To represent the current hour, we rotate the corresponding to the 0 degree mark.  As the hour progresses, we rotate the paddle associated with the current five minute interval back and forth by 90 degrees.  When the clock advances to the next five minute mark, the previous paddles continuing rotating until the next hour.  We use the <a href="http://playground.arduino.cc/code/time">Arduino Time library</a> to retrieve the current hour and minute based on an initial time that we set.  As mentioned above, this time-telling behavior is interrupted when any of the sensors detects someone’s presence.
+						     	If none of the sensors detect someone in front of Janis, we direct the servos to display the current time instead.  Janis has twelve paddles, so we can represent both each hour and each five minute mark.  One o’clock and the first five minutes of the hour are both represented by the left-most paddle.  To represent the current hour, we rotate the corresponding paddle to the 0 degree mark and the remaining paddles to the 45 degree mark.  As the hour progresses, we rotate the paddle associated with the current five minute interval back and forth by 90 degrees.  When the clock advances to the next five minute mark, the previous paddles continuing rotating until the next hour rolls over.  We use the Arduino Time library to retrieve the current hour and minute based on an initial time that we set.  As mentioned above, this time-telling behavior is interrupted when any of the sensors detects someone’s presence.
 						     </p>
 						</article>
 					</div>
