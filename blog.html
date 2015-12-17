@@ -1,0 +1,261 @@
+<!-- blog.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Bootstrap Blog Template">
+    <meta name="author" content="Megan McCauley">
+    <title>Twisted Art - Blog</title>
+
+    <!-- Font -->
+    <link href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/shift.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS files -->
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-theme.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <!-- JQuery and Bootstrap Script files -->
+    <script src="jquery-2.1.4.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="navigation">
+      <div class="container">
+        <ul class = "nav navbar-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="where-we-are.html">Where We Are</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="meet-the-team.html">Meet the Team</a></li>
+          <li><a href="contact-us.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mini-title">
+      <div class="container">
+        <h1><a href="index.html">Twisted Ribbons Interactive Art</a></h1>
+        <p>We're a team of five students creating an interactive art exhibit in 3 months.</p>
+      </div>
+    </div> 
+<!-- nov 20 at 9:39pm -->
+    <div id="body" class="container">
+        <article>
+          <h1><b>Latest Posts</b></h1>
+<!-- 
+          <hr>
+          <h2>Title</h2>
+          <h3>Author</h3>
+          <div class="row">
+            Date, time
+          <hr>
+          <div class = "text">
+            <h2>Paragraph text</h2>
+            <img src="image.JPG" class="img-responsive">
+          </div>
+ -->
+<!--          Shrinidhi's Blog Post -->
+          <hr>
+          <hr>
+          <h2>Sometimes you need “sketchiness”</h2>
+          <h3>Shrinidhi Thirumalai</h3>
+          
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+            4 December 2015 9:39 PM
+          <!-- </div> -->
+          <hr>
+              <div class = "text">
+
+                <img src="first_proto.jpg" width="50%" height="50%" class="img-responsive">
+
+                <h2>This last week, Bonnie and I ran into brick walls over and over on the coding team. We had brainstormed and created a queue structure that we thought made most sense for our problem, but we didn’t have anything to show for it. Though our code structure was beautiful, we didn’t have an interaction that simply worked.  Janis, try as we might, was jerky and slow(see video).</h2>
+
+                <img src="first_proto.jpg" width="50%" height="50%" class="img-responsive">
+
+                <h2>Eventually, the rest of the team sensed our frustration. Meg and Charlie gently prodded us to try something else. However, having invested in the queue structure for so long, Bonnie and I hesitated. Finally, Meg and Charlie took to code on their own. They came back with a simpler, perhaps sketchier code that worked! It created a simple interaction and fun to play with.</h2>
+
+                <img src="Proto3_Render.JPG" class="img-responsive">
+
+                <h2>This pivot was a motivation surge for the entire team. Seeing a working interaction that was fun to play with restored our faith.  Bonnie couldn’t stop jumping in front of Janis(see video above)! It was also a very humbling moment for me. It reminded me that as invested as I may be in a particular direction, sometimes, I need someone else to kill my baby. A third person’s point of view is extremely important for this.</h2>
+
+                <h2>It also reminded me that “sketchiness “is not always bad. Though as coders, Bonnie and I focus on organized and clean code, quick and messy code is not to be underestimated. Sometimes, its simplicity lends itself to fast prototyping. In my future projects, an outsider, especially a non-coder’s feedback may be critical. In fact, not only is their feedback critical, but their code as well.</h2>
+
+                <h2>Best, Shrinidhi</h2>
+          </div>
+
+
+          <hr>
+          <hr>
+          <h2>Let's Gear Up</h2>
+          <h3>Jason Lan</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+            20 November 2015 9:39 PM
+          <!-- </div> -->
+          <hr>
+              <div class = "text">
+                <h2>During Sprint III we added sensor input to the system to make our art installation interactive. We started with infrared distance sensor to measure the presence/ distance of a person. Whenever a sensor detects an object in its range, the corresponding paddles behind it will rotate to a different position. A small-scale model was made to demonstrate the interaction process.</h2>
+
+                <h2>A big decision we made during this sprint is to shift the object rotating in the middle from ribbons to paddles. The main reason is the difficulty involved in controlling the spinning of ribbons for desired patterns. As ribbons are not consistently providing the same pattern during each rotation and we couldn’t find a desirable ribbon material for the project. Since we all want to focus on the design of interaction instead of the system complexity, we changed from twisting ribbons to twisting paddles.</h2>
+
+                <img src="first_proto.jpg" width="50%" height="50%" class="img-responsive">
+                <h2></h2>
+                <img src="Proto3_Render.JPG" class="img-responsive">
+
+                <h2>On Wednesday we started to assemble the third Prototype with 12 paddles on. In this iteration of the project we increased it to full scale with most parts we are going to use in the final iteration. The Arduino Mega 2560 replaced the Uno to provide control channels for more servos. A wall plug-in power was added to replace the old bulky lab DC power source, six ultrasonic range detectors were connected to get sensor input and a LED strip was installed to provide background lightening. Below is a picture for our prototype.</h2>
+
+                <img src="full_scale.jpg" class="img-responsive">
+
+                <h2>We are soooooo excited that the prototype is working, but we also realized improvements can be made in the next sprint</h2>
+
+            <ul>
+                <li>Make the product aesthetically pleasing</li>
+                  <ul>
+                    <li>More interaction modes</li>
+                    <li>Clean up the wires (imagine 64 wires tangling together…)</li>
+                    <li>Paint the box</li>
+                  </ul>
+                <li>Move the circuits onto proto-board</li>
+                <li>Find a place to put up our project (library, hallway and etc?)</li>
+            </ul>
+
+                <h2>It’s so surprising that there’s going to be only two weeks and a half left for this project and we’d love to finish it strong and, of course, enjoy ourselves along the way. Go team!</h2>
+          </div>
+        <!-- </div> -->
+          
+          <hr>
+          <hr>
+          <h2>Goodbye Sprint 2, Hello Sprint 3!</h2>
+          <h3>Meg McCauley</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">    <!--will be used when the navigation panel is added on the side-->
+              13 November 2015 3:03 PM
+            </div>
+            <hr>
+            <div class = "text">
+              <h2>We just finished the first week of Sprint 3. This is a very exciting time for our team where there are lots of things for us to do. We had our first real sprint review to end Sprint 2 last Friday. Seeing the progress of other teams and receiving feedback from our professors and our peers left us with a lot to think about as we started Sprint 3.</h2>
+
+              <h2>The first thing we did during Sprint 3 was sit down as a full team and talk in detail about the direction that we want our project to head in. The first major change that we made involved switching our main display from a ribbon that twists to a paddle that rotates. This choice was made for a variety of reasons, but primarily to reduce the number of servos that we would have to power and to simplify the computing system.</h2>
+
+              <h2>After making our plans to look forward, we spent some time look back and reflecting on Sprint 2 by doing a sprint retrospective. During a retrospective, each team member individually writes down pluses and deltas from the sprint on sticky notes. Pluses are positive things that we want to continue doing; deltas are things that could use improvement next sprint. After we have all written our thoughts down, we take turns putting our sticky notes on the wall and giving a short explanation for each plus and delta. As more team members add their sticky notes to the wall, we try to group them by similar idea or theme.</h2>
+
+              <img src="retro.jpg" class="img-responsive">
+
+              <h2>At the end of this process, we look over the wall as a whole and chose a kaizen, or focus, for the upcoming sprint. This sprint, we are going to be focusing on communicating problems. This means that whenever one subteam runs into a problem, they will make sure to inform the full team so that we can all brainstorm solutions together. This kaizen also includes communicating with our professors and peers to get a different perspective and possible outside suggestions to resolve our problem.</h2>
+
+              <h2>After talking about our pluses and deltas, we made a list of goals that we as a team wanted to accomplish this sprint:</h2>
+
+              <ul>
+                <li>Sensor integration</li>
+                <li>New prototype at full scale</li>
+                <li>Fully contained system</li>
+                <ul>
+                  <li>Reliable servos</li>
+                  <li>Arduino powered on power supply</li>
+                </ul>
+                <li>Decide how to power all servos</li>
+                <ul>
+                  <li>Seeduino Mega?</li>
+                  <li>Arduino shield?</li>
+                </ul>
+                <li>At least 1-2 more beautiful web pages</li>
+                <li>Individual work and subteam meetings</li>
+              </ul>
+
+              <h2>To fulfill one of our sprint goals, we decided to meet as subteams to get more work done when our full team wasn’t available. At the first ECE subteam meeting, Jason, Charlie, and I worked together to get an integrated prototype of an IR sensor responding to user input and controlling a servo. This interaction between sensor and servo is key to our final design, so it was extremely exciting to be able to have this interaction prototyped and working. We recorded this important milestone in film.</h2>
+
+              <video width="400" height="400" controls>
+                <source src="paddle_test.mp4" type="video/mp4">
+                  Sorry, looks like your browser doesn't support this video! :/
+              </video>
+
+              <h2>Although we have encountered some roadblocks on our journey so far, we are working hard to overcome them. I am optimistic about where we are headed and can’t wait to see where we end up at the end of this sprint!</h2>
+
+              <h2>Best, Meg</h2>
+
+          </div>
+        <!-- </div> -->
+
+          <!-- POST 2: BONNIE -->
+          <hr>
+          <h2>Servo Control</h2>
+          <h3>Bonnie Ishiguro</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+              6 November 2015 11:15 AM
+          </div>
+          <hr>
+            <div class="text">
+              <h2>During Sprint 2, the software team worked on the task of changing the orientation of a ribbon by sweeping its servos to the appropriate positions.  Although the sweeping motion itself is simple to implement, we ran into challenges while integrating our code with the mechanical system.  We wrote our original sweeping algorithm under the assumption that the servos were all oriented the same way.  In our first prototype, however, the servos on top were flipped 180 degrees around the y axis compared to the bottom servos, in addition to being upside down.  This meant that the ranges of motion for a top servo and a bottom servo were offset by 180 degrees, and they could not rotate in the same direction.</h2>
+
+              <h2>To resolve this issue, we first flipped the bar that the bottom servos are mounted to align their ranges of motion.  To account for the fact that the top and bottom servos are facing each other, we altered our calibration and sweeping functions.  We now calibrate the bottom servos to the 0 degree position and rotate them clockwise while sweeping to a new position, and we calibrate the top servos to the 180 degree position and rotate them counterclockwise while sweeping.</h2>
+
+              <img src="Servo.png" class="img-responsive">
+
+              <h2>After successfully completing servo sweeping, we started implementing the algorithm we worked out in Sprint 1 that translates a desired ribbon shape to top and bottom servo positions.  This is illustrated in the following figure.  The red dot indicates the position of the skinny part of the ribbon after it’s folded by its top and bottom servos, and the boxes on the left indicate the servo positions required to achieve a desired ribbon shape.</h2>
+
+              <img src="Ribbon.png" class="img-responsive">
+
+              <h2>In parallel to servo control, we set up Python to Arduino communication over a serial port using a library called pyserial.  We tested it by changing individual servo positions using Python.  A next step for Spring 3 is to integrate this with our Arduino servo control code, so that we can write our sensor processing and ribbon pattern code in Python.</h2>
+
+              <h2>A challenge that we faced throughout the sprint was working with power sources for the servos.  We originally powered the servos with the 5V pin on the Arduino.  Our current prototype has six servos for three ribbons, but with this setup we could not control more than three or four servos without seeing unpredictable behavior.  This made debugging code difficult, as it was hard to tell whether a servo was not moving as expected because of a problem with our algorithm or a power-related issue.  Halfway through the sprint, we switched to an external power supply, which allowed us to work with all six servos at once.  Although more reliable, we still experience servo jitter, which seems to be caused by the current voltage level set by the power supply.</h2>
+            </div>
+          <!-- </div> -->
+
+          <!-- POST 1: CHARLIE -->
+          <hr>
+          <hr>
+          <h2>Advancing the Mechanical System</h2>
+          <h3>Charlie Mouton</h3>
+          <div class="row">
+            <div class="group1 col-sm-6 col-md-6">
+              <!-- <span class="glyphicon glyphicon-time"></span> -->
+              30 October 2015 12:28 PM
+            </div>
+              <hr>
+              <div class="text">
+                <h2>During Sprint 1, we were able to create a mechanical system that would serve as our testing platform for our first few sprints. We quickly cut some plywood on the shopbot CNC router we have access to. Of course, as with any first prototype, we ran into some issues at assembly, specifically if the areas of servo mounting and wire management.</h2>
+
+                <img src="Proto1_Render.JPG" class="img-responsive">
+
+                <h2>I did not account for the mounting tabs on each servo, and the servo mounted in the middle did not fit, and eventually was mounted with its tabs sitting above the other two. Also, once we mounted our two inch wide ribbons, we noticed that due to the servos close proximity to the front plate, the ribbons were not free to rotate 180 degrees without interference. We solved this problem temporarily using delrin spacers.</h2>
+
+                <img src="servos.jpg" class="img-responsive">
+
+                <h2>I put little thought in wire management, causing the wires running from our arduino to the top servos to look unsightly, and leading to several instances of them getting unplugged from our breadboard due to their mounting system. There is also no home for the arduino and breadboard, and they are just resting at the bottom, causing some interference with the servos mounted at the bottom of our system.</h2>
+
+                <img src="arduino.jpg" class="img-responsive">
+
+                <h2>To solve these problems for Proto2, I implemented some holes in our arduino mounting plates for wires to go through. I also left more space on each side of our front plate for the wire to traverse down to the electronics sitting on the base. I also improved the servo mounting plate by rotating the angle that the servo is mounted by ninety degrees, eradicating any interference that might occur between their mounting tabs. This also allowed for us to create better spacing between servo horn and the front plate.</h2>
+
+                <img src="Proto2_Render.JPG" class="img-responsive">
+
+                <h2>Another major change for Proto2 is the addition of two more ribbons. By having potentially 5 ribbons mounted, we can better visualize the patterns that we aim to see in the larger system, even if we won't be able to do that this sprint. By planning ahead in this sense, we ensure that our computing team has a well-suited testing platform for them to continue to work on their interactions with their servos as well as their pattern algorithms.</h2>
+              </div>
+            <!-- </div> -->
+          <!-- </div> -->
+
+        </article>
+        
+<!--         <div class="col-md-4">
+          -- SIDEBAR --
+        </div>
+      </div>
+    </div> -->
+    <div class = "space">
+    </div>
+
+    <div class="col-lg-12">
+      <p>Copyright &copy; Megan McCauley 2015</p>
+    </div>
+  </body>
+</html>
