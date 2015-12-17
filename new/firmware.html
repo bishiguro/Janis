@@ -59,16 +59,16 @@
 								The source code that runs Janis can be found in our <a href="https://github.com/bishiguro/TwistedWaveInstallation">Github repository</a> within the Current Interaction/janis folder.  The firmware is run on an Arduino Uno and is written in the Arduino programming language.
 							</p>
 							<p>
-								Janis has two modes.  By default, it tells time with its 12 paddles.  When any of its sensors detects  someone, however, it pauses and instead moves its paddles in response to that person.  The orientations of the paddles are controlled by servos.  The state of the system is represented with a C++ structure that holds a list of the current servo positions and a list of directions in which each servo is sweeping.  A list of boolean values keeps track of whether each sensor is currently detecting someone or not.
+								Janis has two modes.  By default, she tells time with her 12 paddles.  When any of her sensors detects  someone, however, she pauses and instead moves her paddles in response to that person.  The orientations of the paddles are controlled by servos.  The state of the system is represented with a C++ structure that holds a list of the current servo positions and a list of directions in which each servo is sweeping.  A list of boolean values keeps track of whether each sensor is currently detecting someone or not.
 							</p>
 							<p>
-								When Janis starts, it attaches the 12 servos to PWM Arduino pins, sets their positions to zero, and sets an initial time from which to start the clock using the <a href="http://playground.arduino.cc/code/time">Arduino Time library</a>.  At the beginning of every loop, Janis reads the input values of each sensor to see if any of them reads a value that exceeds our threshold of 200.
+								When Janis starts, the 12 servos are attached to PWM Arduino pins, their positions are set to zero, and we set an initial time from which to start the clock using the <a href="http://playground.arduino.cc/code/time">Arduino Time library</a>.  At the beginning of every loop, Janis reads the input values of each sensor to see if any of them reads a value that exceeds our threshold of 200.
 							</p>
 								<header>
 									<h3>Interaction Mode</h3>
 								</header>
 							<p>
-								If any of the sensors read such a value, the paddles stop telling time and sweep to the 0 degree position.  The two paddles that correspond to each detecting sensor sweep to the 90 degree position for a minimum of 80 cycles and until the person has moved away.  To rotate the paddles, we increment or decrement its position by 1, depending on the direction it is sweeping, each iteration of the loop that it detects someone.  If the servo reaches the 0 degree or the 90 degree mark, it switches its direction of motion.  To write new positions to the servos, we use the <a href="https://www.arduino.cc/en/Reference/Servo">Arduino Servo library</a>.
+								If any of the sensors read such a value, the paddles stop telling time and sweep to the 0 degree position.  The two paddles that correspond to each detecting sensor sweep to the 90 degree position for a minimum of 80 cycles and until the person has moved away.  To rotate a paddle, we increment or decrement its position by 1, depending on the direction it is sweeping, each iteration of the loop that Janis detects someone.  If the servo reaches the 0 degree or the 90 degree mark, it switches its direction of motion.  To write new positions to the servos, we use the <a href="https://www.arduino.cc/en/Reference/Servo">Arduino Servo library</a>.
 							</p>
 
 								<header>
