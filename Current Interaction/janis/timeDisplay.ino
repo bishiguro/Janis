@@ -6,7 +6,7 @@ int prev_second;
 
 
 void initializeTime() {
-	setTime(1,30,0,12,17,2015);
+	setTime(10,0,0,12,17,2015);
 }
 
 void printTime() { // update the clock
